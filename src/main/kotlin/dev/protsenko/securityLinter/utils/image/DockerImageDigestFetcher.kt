@@ -57,8 +57,14 @@ object DockerImageDigestFetcher {
     }
 
     fun fetchDigest(imageName: String): CompletableFuture<String> {
+        val imagePath = if (imageName.contains("/")) {
+            imageName
+        } else {
+            "library/${imageName}"
+        }
+
         val apiUrl =
-            "https://hub.docker.com/v2/repositories/library/$imageName/tags?page_size=1&name=latest"
+            "https://hub.docker.com/v2/repositories/$imagePath/tags?page_size=1&name=latest"
 
         val request = HttpRequest.newBuilder()
             .uri(URI.create(apiUrl))

@@ -2,6 +2,12 @@
 
 # Infrastructure as Code (IaC) Security Linter Changelog
 
+## [1.1.6] 14-05-2025
+
+### Changed
+- fixed issue with fetching digest
+- updating IDEA until version
+
 ## [1.1.5] 04-03-2025
 
 ### Changed
