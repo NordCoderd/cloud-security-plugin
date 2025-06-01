@@ -1,17 +1,11 @@
 FROM debian:stable-20210621
 <warning descr="RUN using 'wget' and 'curl'
 Avoid using both 'wget' and 'curl' since these tools have the same effect.">RUN wget http://bing.com</warning>
-<warning descr="RUN using 'wget' and 'curl'
-Avoid using both 'wget' and 'curl' since these tools have the same effect.">RUN curl http://google.com</warning>
 
 FROM baseimage:1.0
 USER mike
 <error descr="Curl bashing detected
 Avoid using curl or wget with pipe (|) or redirection (>) to directly execute scripts from untrusted sources.">RUN curl http://bing.com]> but was:<[FROM debian:stable-20210621</error>
-<warning descr="RUN using 'wget' and 'curl'
-Avoid using both 'wget' and 'curl' since these tools have the same effect.">RUN wget http://bing.com</warning>
-<warning descr="RUN using 'wget' and 'curl'
-Avoid using both 'wget' and 'curl' since these tools have the same effect.">RUN curl http://google.com</warning>
 
 FROM baseimage:1.0
 USER mike

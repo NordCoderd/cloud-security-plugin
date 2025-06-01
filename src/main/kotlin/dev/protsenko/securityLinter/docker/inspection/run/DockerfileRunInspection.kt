@@ -6,6 +6,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.docker.dockerFile.DockerPsiFile
 import com.intellij.docker.dockerFile.parser.psi.DockerFileRunCommand
 import com.intellij.docker.dockerFile.parser.psi.DockerFileVisitor
+import com.intellij.docker.dockerFile.parser.psi.DockerPsiCommand
 import com.intellij.openapi.extensions.ExtensionPointName
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiElementVisitor.EMPTY_VISITOR
@@ -34,10 +35,9 @@ class DockerfileRunInspection : LocalInspectionTool() {
                 val curlCommands = mutableListOf<DockerFileRunCommand>()
                 val wgetCommands = mutableListOf<DockerFileRunCommand>()
 
-                val runCommands = file.findChildrenByClass(DockerFileRunCommand::class.java)
+                val dockerCommands = file.findChildrenByClass(DockerPsiCommand::class.java)
+                val runCommands = dockerCommands.filterIsInstance<DockerFileRunCommand>()
 
-                var currentOffset = 0
-                val runCommandsToHighlight = mutableListOf<DockerFileRunCommand>()
                 runCommands.forEach { element ->
                     val execForm = element.parametersInJsonForm?.toStringDockerCommand("RUN ")
                     val runCommand = execForm ?: element.text
@@ -47,20 +47,10 @@ class DockerfileRunInspection : LocalInspectionTool() {
 
                     if ("wget" in runCommand) wgetCommands.add(element)
                     if ("curl" in runCommand) curlCommands.add(element)
-
-                    val textRange = element.textRange
-                    if (currentOffset == 0){
-                        currentOffset = textRange.endOffset
-                    } else {
-                        if (currentOffset + 1 != textRange.startOffset) {
-                            runCommandsToHighlight.clear()
-                        }
-                        currentOffset = textRange.endOffset
-                    }
-                    runCommandsToHighlight.add(element)
                 }
 
-                if (runCommandsToHighlight.size > 1){
+                val runCommandsToHighlight = collectRunChains(dockerCommands)
+                if (runCommandsToHighlight.isNotEmpty()) {
                     runCommandsToHighlight.forEach { runCommand ->
                         val descriptor = HtmlProblemDescriptor(
                             runCommand,
@@ -88,4 +78,23 @@ class DockerfileRunInspection : LocalInspectionTool() {
             }
         }
     }
+
+    private fun collectRunChains(
+        dockerCommands: Array<DockerPsiCommand>
+    ): List<DockerFileRunCommand> {
+        val result  = mutableListOf<DockerFileRunCommand>()
+        val current = mutableListOf<DockerFileRunCommand>()
+
+        for (cmd in dockerCommands) {
+            if (cmd is DockerFileRunCommand) {
+                current += cmd
+            } else {
+                if (current.size > 1) result += current
+                current.clear()
+            }
+        }
+        if (current.size > 1) result += current
+        return result
+    }
+
 }

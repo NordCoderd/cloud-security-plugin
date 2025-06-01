@@ -8,7 +8,8 @@ class DS034ConsecutiveRunCommands(
     override val ruleFolderName: String = "DS034",
     override val customFiles: Set<String> = setOf(
         "Dockerfile-three-commands.denied",
-        "Dockerfile-user-command-between.allowed"
+        "Dockerfile-user-command-between.allowed",
+        "Dockerfile-two-and-one-command.denied"
     ),
     override val targetInspection: LocalInspectionTool = DockerfileRunInspection()
 ) : DockerHighlightingBaseTest()

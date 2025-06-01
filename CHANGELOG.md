@@ -2,6 +2,14 @@
 
 # Infrastructure as Code (IaC) Security Linter Changelog
 
+## [1.1.7] 02-06-2025
+
+### Fixed
+- Fixed a problem with false negatives on [Dockerfile: Consolidate Multiple RUN Instructions](https://protsenko.dev/infrastructure-security/multiple-consecutive-run-commands/)
+
+### Written
+- [Read](https://protsenko.dev/2025/03/24/how-i-made-docker-linter-for-intellij-idea-and-other-jetbrains-ide/) my article about my experience creating this IDE plugin.
+
 ## [1.1.6] 14-05-2025
 
 ### Changed

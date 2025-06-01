@@ -16,6 +16,7 @@ Scan Docker and Infrastructure as Code (IaC) files for security vulnerabilities 
 - Quick-fixes for problems are available for some inspections that could help fix problem faster.
 - Supports complicated verifications, such as tracking variables and arguments as sources of issues.
 - Pure Kotlin implementation, leveraging the power of IDEs.
+- Because I made it with love, [read about my experience creating the plugin.](https://protsenko.dev/2025/03/24/how-i-made-docker-linter-for-intellij-idea-and-other-jetbrains-ide/)
 
 ## What does the plugin offer?
 

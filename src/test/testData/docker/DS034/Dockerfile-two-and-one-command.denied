@@ -1,0 +1,6 @@
+FROM alpine:3.13
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN touch first</warning>
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN touch second</warning>
+
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN touch last one</warning>
+USER mike
