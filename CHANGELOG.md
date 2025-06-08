@@ -2,6 +2,12 @@
 
 # Infrastructure as Code (IaC) Security Linter Changelog
 
+## [2.0.0] 04-06-2025
+
+### Added
+
+- Start working on implementation rego-based rules
+
 ## [1.1.7] 02-06-2025
 
 ### Fixed
