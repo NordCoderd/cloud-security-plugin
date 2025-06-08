@@ -6,5 +6,5 @@ import dev.protsenko.securityLinter.core.DockerComposeHighlightingBaseTest
 class DC001InvalidImageDefinitionTest(
     override val ruleFolderName: String = "DC001",
     override val targetInspection: LocalInspectionTool = DockerComposeInspection(),
-    override val customFiles: Set<String> = emptySet<String>()
+    override val customFiles: Set<String> = emptySet()
 ): DockerComposeHighlightingBaseTest()

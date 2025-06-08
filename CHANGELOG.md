@@ -2,6 +2,14 @@
 
 # Infrastructure as Code (IaC) Security Linter Changelog
 
+## [1.1.8] 08-06-2025
+
+### Fixed
+- Issue with analyzing docker compose files
+
+### Improved
+- Correct YAML key matching based on qualified names
+
 ## [1.1.7] 02-06-2025
 
 ### Fixed

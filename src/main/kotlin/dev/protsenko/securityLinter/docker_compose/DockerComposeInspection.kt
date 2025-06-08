@@ -17,22 +17,21 @@ import dev.protsenko.securityLinter.docker_compose.DockerComposeConstants.USER_K
 import dev.protsenko.securityLinter.docker_compose.DockerComposeConstants.supportedAttributes
 import dev.protsenko.securityLinter.utils.PortUtils
 import dev.protsenko.securityLinter.utils.image.ImageAnalyzer
-import dev.protsenko.securityLinter.utils.image.ImageDefinition
 import dev.protsenko.securityLinter.utils.image.ImageDefinitionCreator
-import dev.protsenko.securityLinter.utils.isChildOfServiceDefinition
+import org.jetbrains.yaml.navigation.YAMLQualifiedNameProvider
 import org.jetbrains.yaml.psi.YAMLFile
 import org.jetbrains.yaml.psi.YAMLKeyValue
 import org.jetbrains.yaml.psi.YAMLSequenceItem
 
 class DockerComposeInspection: LocalInspectionTool() {
 
+    val provider = YAMLQualifiedNameProvider()
+
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PsiElementVisitor(){
             override fun visitFile(file: PsiFile) {
-                if (file is YAMLFile
-                    || !file.name.startsWith("docker", ignoreCase = true)){
-                    return
-                }
+                if (file !is YAMLFile) return
+                if (!file.name.startsWith("docker", ignoreCase = true)) return
                 super.visitFile(file)
             }
 
@@ -41,16 +40,18 @@ class DockerComposeInspection: LocalInspectionTool() {
              */
             override fun visitElement(element: PsiElement) {
                 if (element is YAMLKeyValue){
+                    val fqn = provider.getQualifiedName(element) ?: return
+                    if (!fqn.startsWith("services")) return
+
                     val attributeName = element.key?.text ?: return
-                    val attributeValue = element.value?.text?.trim() ?: return
                     if (attributeName !in supportedAttributes) return
-                    if (!element.isChildOfServiceDefinition()) return
+                    val attributeValue = element.value?.text?.trim() ?: return
 
                     when (attributeName){
                         // Analyzing image definition
                         IMAGE_KEY_LITERAL -> {
                             val imageDefinition = ImageDefinitionCreator.fromString(attributeValue, emptyMap())
-                            ImageAnalyzer.analyzeAndHighlight(imageDefinition, holder, element, emptyMap<String, ImageDefinition>())
+                            ImageAnalyzer.analyzeAndHighlight(imageDefinition, holder, element, emptyMap())
                         }
                         USER_KEY_LITERAL -> {
                             if (PROHIBITED_USERS.contains(attributeValue.trim())){
