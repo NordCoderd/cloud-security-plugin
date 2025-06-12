@@ -5,6 +5,10 @@
 [![JetBrains Plugin Downloads](https://img.shields.io/jetbrains/plugin/d/dev.protsenko.security-linter)](https://plugins.jetbrains.com/plugin/25413-infrastructure-security)
 
 <!-- Plugin description -->
+<picture>
+  <img alt="Logo" align="right" src="https://raw.githubusercontent.com/NordCoderd/cloud-security-plugin/refs/heads/master/src/main/resources/META-INF/pluginIcon.svg" width="150">
+</picture>
+
 Cloud (IaC) Security Linter for JetBrains IDEs (e.g., IntelliJ IDEA, PyCharm, WebStorm, and more).
 
 Scan Docker, Kubernetes, and other Infrastructure-as-Code (IaC) files for security vulnerabilities and misconfigurations directly within your JetBrains IDE.
