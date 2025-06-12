@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - date; echo Hello from the Kubernetes cluster
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: <error descr="Container runs as root or can gain root privileges.">0</error>
+          - name: hello2
+            securityContext:
+              runAsUser: 1000
+              runAsNonRoot: true
+          restartPolicy: OnFailure

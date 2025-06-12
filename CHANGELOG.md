@@ -1,6 +1,18 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# Infrastructure as Code (IaC) Security Linter Changelog
+# Cloud (IaC) Security Changelog
+
+## [2.0.0] 11-07-2025
+
+This version marks a major step in the plugin’s lifecycle.  
+In this release, I have begun implementing Kubernetes rules and completed the rebranding.
+
+### Added
+- Kubernetes: Detect non-root containers to align with the NSA Kubernetes Hardening Guide
+
+### Updated
+- Plugin name made more concise
+- New branded logo featuring the dog “Jessica”
 
 ## [1.1.8] 08-06-2025
 

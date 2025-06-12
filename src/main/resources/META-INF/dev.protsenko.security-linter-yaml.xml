@@ -12,8 +12,13 @@
     <extensions defaultExtensionNs="com.intellij">
         <localInspection
                 implementationClass="dev.protsenko.securityLinter.docker_compose.DockerComposeInspection"
-                displayName="Docker Compose best practices"
+                displayName="Docker Compose Best Practices"
                 groupPathKey="common.group-key" groupKey="common.docker-compose-group-key"
+                enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.NonRootContainerInspection"
+                displayName="Non Root Containers"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
     </extensions>
 </idea-plugin>

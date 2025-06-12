@@ -5,10 +5,10 @@
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>Infrastructure as Code (IaC) Security Linter</name>
+    <name>Cloud (IaC) Security</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="tech@protsenko.dev" url="https://protsenko.dev">Dmitrii Protsenko</vendor>
+    <vendor email="tech@protsenko.dev" url="https://protsenko.dev">Dmitry Protsenko</vendor>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
