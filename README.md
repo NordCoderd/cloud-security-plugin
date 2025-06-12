@@ -4,10 +4,10 @@
 [![JetBrains Plugin Version](https://img.shields.io/jetbrains/plugin/v/dev.protsenko.security-linter)](https://plugins.jetbrains.com/plugin/25413-infrastructure-security)
 [![JetBrains Plugin Downloads](https://img.shields.io/jetbrains/plugin/d/dev.protsenko.security-linter)](https://plugins.jetbrains.com/plugin/25413-infrastructure-security)
 
+<!-- Plugin description -->
 <picture>
   <img alt="Logo" align="right" src="https://raw.githubusercontent.com/NordCoderd/cloud-security-plugin/refs/heads/master/src/main/resources/META-INF/pluginIcon.svg" width="125">
 </picture>
-<!-- Plugin description -->
 
 Cloud (IaC) Security Linter for JetBrains IDEs (e.g., IntelliJ IDEA, PyCharm, WebStorm, and more).
 
