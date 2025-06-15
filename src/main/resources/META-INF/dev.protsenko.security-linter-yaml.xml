@@ -20,5 +20,10 @@
                 displayName="Non Root Containers"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.InsecureCapabilitiesInspection"
+                displayName="Insecure Capabilities"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
     </extensions>
 </idea-plugin>

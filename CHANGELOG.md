@@ -2,6 +2,15 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.1] 15-06-2025
+
+### Added
+- Kubernetes Security: detect insecure capabilities for containers
+- Quick fixes for non-root containers inspection
+
+### Changed
+- Places for highlighting non-root containers
+
 ## [2.0.0] 11-07-2025
 
 This version marks a major step in the plugin’s lifecycle.  

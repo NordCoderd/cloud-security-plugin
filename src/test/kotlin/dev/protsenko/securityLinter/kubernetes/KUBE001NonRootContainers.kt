@@ -18,6 +18,7 @@ class KUBE001NonRootContainers(
         "deployment.yaml.allowed",
         "deployment.yaml.denied",
         "cronjob.yaml.denied",
-        "cronjob-run-as-user.yaml.denied"
+        "cronjob-run-as-user.yaml.denied",
+        "pod-global-null-security-context.yaml.denied"
     )
 ): KubernetesHighlightingBaseTest()

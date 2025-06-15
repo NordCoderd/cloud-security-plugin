@@ -4,7 +4,9 @@ metadata:
   name: static-web-all-null
   labels:
     role: myrole
-<error descr="Container runs as root or can gain root privileges.">spec</error>:
+spec:
+  <error descr="Container runs as root or can gain root privileges.">securityContext</error>:
+    runAsGroup: 1000
   containers:
     - name: web
       image: nginx

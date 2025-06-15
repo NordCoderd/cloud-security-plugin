@@ -8,12 +8,19 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
 import dev.protsenko.securityLinter.core.HtmlProblemDescriptor
 import dev.protsenko.securityLinter.core.SecurityPluginBundle
+import dev.protsenko.securityLinter.kubernetes.quickfix.ReplaceValueTo1000QuickFix
+import dev.protsenko.securityLinter.kubernetes.quickfix.ReplaceValueToTrueQuickFix
+import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.RUN_AS_GROUP
+import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.RUN_AS_NON_ROOT
+import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.RUN_AS_USER
+import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.SECURITY_CONTEXT
+import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.SPEC
+import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.containerTypes
+import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.evaluateSpecPrefix
+import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.supportedKinds
 import dev.protsenko.securityLinter.utils.YamlPath
 import org.jetbrains.yaml.YAMLUtil
-import org.jetbrains.yaml.psi.YAMLFile
-import org.jetbrains.yaml.psi.YAMLMapping
-import org.jetbrains.yaml.psi.YAMLScalar
-import org.jetbrains.yaml.psi.YAMLSequence
+import org.jetbrains.yaml.psi.*
 
 class NonRootContainerInspection : LocalInspectionTool() {
 
@@ -32,7 +39,7 @@ class NonRootContainerInspection : LocalInspectionTool() {
                     val specPrefix = evaluateSpecPrefix(kindValue)
 
                     val isRunAsNonRoot = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_NON_ROOT", document)
-                    val isAllowedRunAsNonRoot = !highlightIfValueNotTrue(isRunAsNonRoot, holder)
+                    !highlightIfValueNotTrue(isRunAsNonRoot, holder)
 
                     val isRunAsUser = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_USER", document)
                     val isRunAsGroup = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_GROUP", document)
@@ -44,7 +51,8 @@ class NonRootContainerInspection : LocalInspectionTool() {
 
                     for (containerType in containerTypes) {
                         val containers =
-                            YamlPath.findByYamlPath("${specPrefix}$containerType", document) as? YAMLSequence ?: continue
+                            YamlPath.findByYamlPath("${specPrefix}$containerType", document) as? YAMLSequence
+                                ?: continue
 
                         for (containerItem in containers.items) {
                             val containerYaml = containerItem.value as? YAMLMapping ?: continue
@@ -65,7 +73,7 @@ class NonRootContainerInspection : LocalInspectionTool() {
                             // pod-level spec.securityContext.runAsNonRoot is set to true.
 
                             // global and container level isn't set
-                            if (isRunAsNonRoot == null && isRunAsNonRootContainer == null){
+                            if (isRunAsNonRoot == null && isRunAsNonRootContainer == null) {
                                 allContainersAreNonRoot = false
                             }
 
@@ -77,8 +85,13 @@ class NonRootContainerInspection : LocalInspectionTool() {
                     }
 
                     if (isRunAsNonRoot == null && !allContainersAreNonRoot) {
+                        val topLevelSecurityContext =
+                            (YamlPath.findByYamlPath(SECURITY_CONTEXT, document)?.parent as? YAMLKeyValue)?.key
+                        val specElement = (YamlPath.findByYamlPath(SPEC, document)?.parent as? YAMLKeyValue)?.key
+                        val toHighlight = topLevelSecurityContext ?: specElement ?: kind
+
                         val descriptor = HtmlProblemDescriptor(
-                            kind,
+                            toHighlight,
                             SecurityPluginBundle.message("kube001.documentation"),
                             SecurityPluginBundle.message("kube001.non-root-containers"),
                             ProblemHighlightType.ERROR, emptyArray()
@@ -93,13 +106,6 @@ class NonRootContainerInspection : LocalInspectionTool() {
         }
     }
 
-    private fun evaluateSpecPrefix(kind: String): String {
-        if (kind == "Pod") return ""
-        if (kind == "CronJob") return "spec.jobTemplate.spec.template."
-        if (kind in specInTemplateKindTypes) return "spec.template."
-        return ""
-    }
-
     private fun highlightIfValueNotTrue(element: PsiElement?, holder: ProblemsHolder): Boolean {
         if (element !is YAMLScalar) return false
         val isRunAsNonRoot = element.textValue.toBooleanStrictOrNull()
@@ -109,7 +115,9 @@ class NonRootContainerInspection : LocalInspectionTool() {
                 element,
                 SecurityPluginBundle.message("kube001.documentation"),
                 SecurityPluginBundle.message("kube001.non-root-containers"),
-                ProblemHighlightType.ERROR, emptyArray()
+                ProblemHighlightType.ERROR, arrayOf(
+                    ReplaceValueToTrueQuickFix(SecurityPluginBundle.message("kube001.qf.fix-run-as-non-root"))
+                )
             )
 
             holder.registerProblem(descriptor)
@@ -128,7 +136,9 @@ class NonRootContainerInspection : LocalInspectionTool() {
                 element,
                 SecurityPluginBundle.message("kube001.documentation"),
                 SecurityPluginBundle.message("kube001.non-root-containers"),
-                ProblemHighlightType.ERROR, emptyArray()
+                ProblemHighlightType.ERROR, arrayOf(
+                    ReplaceValueTo1000QuickFix(SecurityPluginBundle.message("kube001.qf.fix-run-as-user-or-group"))
+                )
             )
 
             holder.registerProblem(descriptor)
@@ -136,12 +146,3 @@ class NonRootContainerInspection : LocalInspectionTool() {
     }
 
 }
-
-private val specInTemplateKindTypes = setOf("Deployment", "ReplicaSet", "DaemonSet", "StatefulSet", "Job")
-private val supportedKinds = specInTemplateKindTypes + setOf("Pod", "CronJob")
-
-private val containerTypes = listOf("spec.containers", "spec.initContainers", "spec.ephemeralContainers")
-
-private const val RUN_AS_NON_ROOT = "securityContext.runAsNonRoot"
-private const val RUN_AS_USER = "securityContext.runAsUser"
-private const val RUN_AS_GROUP = "securityContext.runAsGroup"
