@@ -2,6 +2,19 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.2] 21-06-2025
+
+### Added
+- Kubernetes Security: detect using privileged containers
+- Kubernetes Security: detect sharing the host namespace
+- Kubernetes Security: detect using insecure hostPath volume types
+
+### Changed
+- Non-root containers inspection is more relaxed and analyzes only prohibited values.
+
+### Blog
+- Check out this [blog post](https://protsenko.dev/2025/06/14/cloud-security-plugin-for-jetbrains-ide-dev-diary-2/) about new features, rebranding, and plans for the plugin.
+
 ## [2.0.1] 15-06-2025
 
 ### Added

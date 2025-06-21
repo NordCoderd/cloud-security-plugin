@@ -9,7 +9,7 @@ class KUBE001NonRootContainers(
     override val targetInspection: LocalInspectionTool = NonRootContainerInspection(),
     override val customFiles: Set<String> = setOf(
         "pod-global-true-container-false.yaml.denied",
-        "pod-global-null.yaml.denied",
+        // "pod-global-null.yaml.denied",
         "pod-global-null-container-true.allowed",
         "pod-container-user-zero.yaml.denied",
         "pod-global-user-zero.yaml.denied",
@@ -19,6 +19,6 @@ class KUBE001NonRootContainers(
         "deployment.yaml.denied",
         "cronjob.yaml.denied",
         "cronjob-run-as-user.yaml.denied",
-        "pod-global-null-security-context.yaml.denied"
+        // "pod-global-null-security-context.yaml.denied"
     )
 ): KubernetesHighlightingBaseTest()

@@ -25,5 +25,20 @@
                 displayName="Insecure Capabilities"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.HostNetworkPidIpcInspection"
+                displayName="Sharing Host Namespaces"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.PrivilegedContainersInspection"
+                displayName="Privileged containers"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.HostPathVolumesInspection"
+                displayName="HostPath Volumes"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
     </extensions>
 </idea-plugin>

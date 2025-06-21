@@ -8,7 +8,9 @@ import com.intellij.openapi.project.Project
 import dev.protsenko.securityLinter.utils.PsiElementGenerator
 import org.jetbrains.yaml.psi.YAMLScalar
 
-class ReplaceValueTo1000QuickFix(@IntentionFamilyName private val message: String) : LocalQuickFix {
+abstract class ReplaceValueWithEnumQuickFix(@IntentionFamilyName private val message: String) : LocalQuickFix {
+    abstract val enumValue: ReplacedValueEnum
+
     override fun getFamilyName(): @IntentionFamilyName String = this.message
 
     override fun generatePreview(project: Project, previewDescriptor: ProblemDescriptor): IntentionPreviewInfo =
@@ -18,7 +20,7 @@ class ReplaceValueTo1000QuickFix(@IntentionFamilyName private val message: Strin
         val psiElement = descriptor.psiElement as? YAMLScalar ?: return
 
         psiElement.replace(
-            PsiElementGenerator.rawText(project, "1000") ?: return
+            PsiElementGenerator.rawText(project, enumValue.value) ?: return
         )
     }
 }

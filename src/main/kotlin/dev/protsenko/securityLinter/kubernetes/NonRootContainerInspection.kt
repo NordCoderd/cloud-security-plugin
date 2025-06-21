@@ -39,15 +39,12 @@ class NonRootContainerInspection : LocalInspectionTool() {
                     val specPrefix = evaluateSpecPrefix(kindValue)
 
                     val isRunAsNonRoot = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_NON_ROOT", document)
-                    !highlightIfValueNotTrue(isRunAsNonRoot, holder)
+                    highlightIfValueNotTrue(isRunAsNonRoot, holder)
 
                     val isRunAsUser = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_USER", document)
                     val isRunAsGroup = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_GROUP", document)
                     highlightIfValueZero(isRunAsUser, holder)
                     highlightIfValueZero(isRunAsGroup, holder)
-
-                    // container level
-                    var allContainersAreNonRoot = true
 
                     for (containerType in containerTypes) {
                         val containers =
@@ -69,35 +66,8 @@ class NonRootContainerInspection : LocalInspectionTool() {
                             val isRunAsNonRootContainer =
                                 YamlPath.findByYamlPath(RUN_AS_NON_ROOT, containerYaml)
 
-                            //The container fields may be undefined/nil if the
-                            // pod-level spec.securityContext.runAsNonRoot is set to true.
-
-                            // global and container level isn't set
-                            if (isRunAsNonRoot == null && isRunAsNonRootContainer == null) {
-                                allContainersAreNonRoot = false
-                            }
-
-                            val isRestrictedValue = highlightIfValueNotTrue(isRunAsNonRootContainer, holder)
-                            if (isRestrictedValue) {
-                                allContainersAreNonRoot = false
-                            }
+                            highlightIfValueNotTrue(isRunAsNonRootContainer, holder)
                         }
-                    }
-
-                    if (isRunAsNonRoot == null && !allContainersAreNonRoot) {
-                        val topLevelSecurityContext =
-                            (YamlPath.findByYamlPath(SECURITY_CONTEXT, document)?.parent as? YAMLKeyValue)?.key
-                        val specElement = (YamlPath.findByYamlPath(SPEC, document)?.parent as? YAMLKeyValue)?.key
-                        val toHighlight = topLevelSecurityContext ?: specElement ?: kind
-
-                        val descriptor = HtmlProblemDescriptor(
-                            toHighlight,
-                            SecurityPluginBundle.message("kube001.documentation"),
-                            SecurityPluginBundle.message("kube001.non-root-containers"),
-                            ProblemHighlightType.ERROR, emptyArray()
-                        )
-
-                        holder.registerProblem(descriptor)
                     }
                 }
 

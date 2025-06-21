@@ -12,6 +12,8 @@ object KubernetesConstants {
     const val RUN_AS_NON_ROOT = "securityContext.runAsNonRoot"
     const val RUN_AS_USER = "securityContext.runAsUser"
     const val RUN_AS_GROUP = "securityContext.runAsGroup"
+    const val PRIVILEGED = "securityContext.privileged"
+    const val ALLOW_PRIVILEGE_ESCALATION = "securityContext.allowPrivilegeEscalation"
 
     fun evaluateSpecPrefix(kind: String): String {
         if (kind == "Pod") return ""

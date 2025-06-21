@@ -5,7 +5,7 @@ metadata:
   labels:
     role: myrole
 spec:
-  <error descr="Container runs as root or can gain root privileges.">securityContext</error>:
+  securityContext:
     runAsGroup: 1000
   containers:
     - name: web

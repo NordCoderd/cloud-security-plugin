@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: audit-pod
+  labels:
+    app: audit-pod
+spec:
+  volumes:
+  - <error descr="Using hostPath volumes is insecure as it gives access to the node's real file system. Consider removing it.">name: host-root
+    hostPath:
+      path: /
+      type: Directory</error>
+  containers:
+  - name: test-container
+    image: hashicorp/http-echo:0.2.3
+    volumeMounts:
+      - name: host-root
+        mountPath: /host
+        readOnly: true
