@@ -2,6 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.3] 22-06-2025
+
+### Changed
+- Performed refactoring of kubernetes inspections
+
 ## [2.0.2] 21-06-2025
 
 ### Added

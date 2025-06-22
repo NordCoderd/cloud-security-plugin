@@ -20,59 +20,37 @@ import org.jetbrains.yaml.psi.*
 class PrivilegedContainersInspection : LocalInspectionTool() {
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : PsiElementVisitor() {
-            override fun visitFile(file: PsiFile) {
-                if (file !is YAMLFile) return
+        return object : BaseKubernetesVisitor() {
+            override fun analyze(specPrefix: String, document: YAMLDocument) {
+                val containers = containers(specPrefix, document)
+                for (containerItem in containers) {
+                    val isPrivilegedElement =
+                        YamlPath.findByYamlPath(PRIVILEGED, containerItem)
 
-                val documents = file.documents
+                    val isAllowPrivilegeEscalationElement =
+                        YamlPath.findByYamlPath(ALLOW_PRIVILEGE_ESCALATION, containerItem)
 
-                for (document in documents) {
-                    val kind = YAMLUtil.getQualifiedKeyInDocument(document, listOf("kind")) ?: return
-                    val kindValue = kind.valueText
-                    if (kindValue !in supportedKinds) return
+                    val elementsToValidate = listOfNotNull(isPrivilegedElement, isAllowPrivilegeEscalationElement)
 
-                    val specPrefix = evaluateSpecPrefix(kindValue)
+                    for (elementToValidate in elementsToValidate) {
+                        if (elementToValidate !is YAMLScalar) continue
+                        val booleanValue = elementToValidate.textValue.toBooleanStrictOrNull()
 
-                    for (containerType in containerTypes) {
-                        val containers =
-                            YamlPath.findByYamlPath("${specPrefix}$containerType", document) as? YAMLSequence
-                                ?: continue
-
-                        for (containerItem in containers.items) {
-                            val containerYaml = containerItem.value as? YAMLMapping ?: continue
-
-                            val isPrivilegedElement =
-                                YamlPath.findByYamlPath(PRIVILEGED, containerYaml)
-
-                            val isAllowPrivilegeEscalationElement =
-                                YamlPath.findByYamlPath(ALLOW_PRIVILEGE_ESCALATION, containerYaml)
-
-                            val elementsToValidate = listOfNotNull(isPrivilegedElement, isAllowPrivilegeEscalationElement)
-
-                            for (elementToValidate in elementsToValidate) {
-                                if (elementToValidate !is YAMLScalar) continue
-                                val booleanValue = elementToValidate.textValue.toBooleanStrictOrNull()
-
-                                if (booleanValue != false){
-                                    val descriptor = HtmlProblemDescriptor(
-                                        elementToValidate,
-                                        SecurityPluginBundle.message("kube004.documentation"),
-                                        SecurityPluginBundle.message("kube004.using-privileged-containers"),
-                                        ProblemHighlightType.ERROR, arrayOf(
-                                            ReplaceValueToFalseQuickFix(
-                                                SecurityPluginBundle.message("kube004.qf.fix-value")
-                                            )
-                                        )
+                        if (booleanValue != false){
+                            val descriptor = HtmlProblemDescriptor(
+                                elementToValidate,
+                                SecurityPluginBundle.message("kube004.documentation"),
+                                SecurityPluginBundle.message("kube004.using-privileged-containers"),
+                                ProblemHighlightType.ERROR, arrayOf(
+                                    ReplaceValueToFalseQuickFix(
+                                        SecurityPluginBundle.message("kube004.qf.fix-value")
                                     )
-                                    holder.registerProblem(descriptor)
-                                }
-                            }
+                                )
+                            )
+                            holder.registerProblem(descriptor)
                         }
                     }
-
                 }
-
-                super.visitFile(file)
             }
         }
     }

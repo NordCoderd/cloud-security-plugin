@@ -33,7 +33,6 @@ Scan Docker, Kubernetes, and other Infrastructure-as-Code (IaC) files for securi
 You can find more information about detected problems:
 
 - [Documentation site](https://protsenko.dev/infrastructure-security)
-- [Exciting story about creating the plugin](https://protsenko.dev/2025/03/24/how-i-made-docker-linter-for-intellij-idea-and-other-jetbrains-ide/)
 - In-IDE pop-up messages describing each issue, each of which links to a dedicated article in the documentation
 
 ## Planned features
@@ -46,5 +45,6 @@ You can find more information about detected problems:
 - My mother, who supported me every step of the way and who is no longer with us.
 - [Trivy-checks](https://github.com/aquasecurity/trivy-checks/tree/main) for a good source of rules.
 - [Hadolint](https://github.com/hadolint/hadolint) for yet another docker rule set.
+- [Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/)
 - [Kubescape regorules](https://github.com/kubescape/regolibrary) for a good source of Kubernetes rules.
 <!-- Plugin description end -->

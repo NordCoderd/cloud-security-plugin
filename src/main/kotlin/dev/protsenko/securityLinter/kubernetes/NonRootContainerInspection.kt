@@ -5,7 +5,6 @@ import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.PsiFile
 import dev.protsenko.securityLinter.core.HtmlProblemDescriptor
 import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.kubernetes.quickfix.ReplaceValueTo1000QuickFix
@@ -13,65 +12,40 @@ import dev.protsenko.securityLinter.kubernetes.quickfix.ReplaceValueToTrueQuickF
 import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.RUN_AS_GROUP
 import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.RUN_AS_NON_ROOT
 import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.RUN_AS_USER
-import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.SECURITY_CONTEXT
-import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.SPEC
-import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.containerTypes
-import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.evaluateSpecPrefix
-import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.supportedKinds
 import dev.protsenko.securityLinter.utils.YamlPath
-import org.jetbrains.yaml.YAMLUtil
-import org.jetbrains.yaml.psi.*
+import org.jetbrains.yaml.psi.YAMLDocument
+import org.jetbrains.yaml.psi.YAMLScalar
 
 class NonRootContainerInspection : LocalInspectionTool() {
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : PsiElementVisitor() {
-            override fun visitFile(file: PsiFile) {
-                if (file !is YAMLFile) return
+        return object : BaseKubernetesVisitor() {
+            override fun analyze(specPrefix: String, document: YAMLDocument) {
+                val isRunAsNonRoot = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_NON_ROOT", document)
+                highlightIfValueNotTrue(isRunAsNonRoot, holder)
 
-                val documents = file.documents
+                val isRunAsUser = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_USER", document)
+                val isRunAsGroup = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_GROUP", document)
+                highlightIfValueZero(isRunAsUser, holder)
+                highlightIfValueZero(isRunAsGroup, holder)
 
-                for (document in documents) {
-                    val kind = YAMLUtil.getQualifiedKeyInDocument(document, listOf("kind")) ?: return
-                    val kindValue = kind.valueText
-                    if (kindValue !in supportedKinds) return
+                val containers = containers(specPrefix, document)
 
-                    val specPrefix = evaluateSpecPrefix(kindValue)
+                for (container in containers) {
+                    val isRunAsUser =
+                        YamlPath.findByYamlPath(RUN_AS_USER, container)
 
-                    val isRunAsNonRoot = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_NON_ROOT", document)
-                    highlightIfValueNotTrue(isRunAsNonRoot, holder)
+                    val isRunAsGroup =
+                        YamlPath.findByYamlPath(RUN_AS_GROUP, container)
 
-                    val isRunAsUser = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_USER", document)
-                    val isRunAsGroup = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_GROUP", document)
                     highlightIfValueZero(isRunAsUser, holder)
                     highlightIfValueZero(isRunAsGroup, holder)
 
-                    for (containerType in containerTypes) {
-                        val containers =
-                            YamlPath.findByYamlPath("${specPrefix}$containerType", document) as? YAMLSequence
-                                ?: continue
+                    val isRunAsNonRootContainer =
+                        YamlPath.findByYamlPath(RUN_AS_NON_ROOT, container)
 
-                        for (containerItem in containers.items) {
-                            val containerYaml = containerItem.value as? YAMLMapping ?: continue
-
-                            val isRunAsUser =
-                                YamlPath.findByYamlPath(RUN_AS_USER, containerYaml)
-
-                            val isRunAsGroup =
-                                YamlPath.findByYamlPath(RUN_AS_GROUP, containerYaml)
-
-                            highlightIfValueZero(isRunAsUser, holder)
-                            highlightIfValueZero(isRunAsGroup, holder)
-
-                            val isRunAsNonRootContainer =
-                                YamlPath.findByYamlPath(RUN_AS_NON_ROOT, containerYaml)
-
-                            highlightIfValueNotTrue(isRunAsNonRootContainer, holder)
-                        }
-                    }
+                    highlightIfValueNotTrue(isRunAsNonRootContainer, holder)
                 }
-
-                super.visitFile(file)
             }
         }
     }

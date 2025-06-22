@@ -17,33 +17,21 @@ import org.jetbrains.yaml.psi.*
 class HostPathVolumesInspection : LocalInspectionTool() {
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : PsiElementVisitor() {
-            override fun visitFile(file: PsiFile) {
-                if (file !is YAMLFile) return
+        return object : BaseKubernetesVisitor() {
+            override fun analyze(specPrefix: String, document: YAMLDocument) {
+                val specVolumes = YamlPath.findByYamlPath("${specPrefix}spec.volumes", document) as? YAMLSequence ?: return
 
-                val documents = file.documents
+                for (volume in specVolumes.items) {
+                    val volumeValue = volume.value as? YAMLMapping ?: continue
+                    volumeValue.getKeyValueByKey("hostPath") ?: continue
 
-                for (document in documents) {
-                    val kind = YAMLUtil.getQualifiedKeyInDocument(document, listOf("kind")) ?: return
-                    val kindValue = kind.valueText
-                    if (kindValue !in supportedKinds) return
-
-                    val specPrefix = evaluateSpecPrefix(kindValue)
-                    val specVolumes = YamlPath.findByYamlPath("${specPrefix}spec.volumes", document) as? YAMLSequence ?: continue
-                    for (volume in specVolumes.items) {
-                        val volumeValue = volume.value as? YAMLMapping ?: continue
-                        volumeValue.getKeyValueByKey("hostPath") ?: continue
-
-                        val descriptor = HtmlProblemDescriptor(
-                            volumeValue,
-                            SecurityPluginBundle.message("kube005.documentation"),
-                            SecurityPluginBundle.message("kube005.host-path-volumes"),
-                            ProblemHighlightType.ERROR, emptyArray()
-                        )
-                        holder.registerProblem(descriptor)
-                    }
-
-                    super.visitFile(file)
+                    val descriptor = HtmlProblemDescriptor(
+                        volumeValue,
+                        SecurityPluginBundle.message("kube005.documentation"),
+                        SecurityPluginBundle.message("kube005.host-path-volumes"),
+                        ProblemHighlightType.ERROR, emptyArray()
+                    )
+                    holder.registerProblem(descriptor)
                 }
             }
         }
