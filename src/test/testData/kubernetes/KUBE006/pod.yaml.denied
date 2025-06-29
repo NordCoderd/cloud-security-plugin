@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: influxdb
+spec:
+  containers:
+    - name: influxdb
+      image: influxdb
+      ports:
+        <error descr="HostPort opens the node's port. Remove hostPort definition and/or use Service/Ingress instead.">- containerPort: 8086
+          hostPort: 8086 # We look for this</error>

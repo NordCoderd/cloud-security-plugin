@@ -40,11 +40,14 @@ You can find more information about detected problems:
 - **Kubernetes**: Implementing rules to align with the NSA Kubernetes Hardening Guide.
 - **and more**: Expanding support for other IaC tools and formats to comprehensively protect and optimize your infrastructure configurations.
 
+## References
+
+- [Trivy checks](https://github.com/aquasecurity/trivy-checks/tree/main) – entry point for Docker rules.
+- [Hadolint](https://github.com/hadolint/hadolint) – source of additional Docker rules.
+- [Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/) – entry point for Kubernetes rules.
+- [Kubescape Rego library](https://github.com/kubescape/regolibrary) – source of Kubernetes rules.
+
 ## Thanks
 
 - My mother, who supported me every step of the way and who is no longer with us.
-- [Trivy-checks](https://github.com/aquasecurity/trivy-checks/tree/main) for a good source of rules.
-- [Hadolint](https://github.com/hadolint/hadolint) for yet another docker rule set.
-- [Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/)
-- [Kubescape regorules](https://github.com/kubescape/regolibrary) for a good source of Kubernetes rules.
 <!-- Plugin description end -->

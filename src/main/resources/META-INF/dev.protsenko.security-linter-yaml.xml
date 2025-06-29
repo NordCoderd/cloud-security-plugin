@@ -40,5 +40,15 @@
                 displayName="HostPath Volumes"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.HostPortsInspection"
+                displayName="HostPorts"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.AppArmorOverrideInspection"
+                displayName="AppArmor or SELinux override"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
     </extensions>
 </idea-plugin>

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: influxdb
+spec:
+  securityContext:
+    appArmorProfile:
+      type: <error descr="AppArmor profile disabled or overridden - container loses kernel protection. Use RuntimeDefault or remove profile type">privileged</error>
+  containers:
+    - name: influxdb
+      image: influxdb

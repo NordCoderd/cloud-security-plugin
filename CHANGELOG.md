@@ -7,6 +7,10 @@
 ### Changed
 - Performed refactoring of kubernetes inspections
 
+### Added
+- Kubernetes Security Standards: AppArmor is disable or override
+- Kubernetes Security Standards: HostPort is used
+
 ## [2.0.2] 21-06-2025
 
 ### Added
