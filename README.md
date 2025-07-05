@@ -25,7 +25,7 @@ Scan Docker, Kubernetes, and other Infrastructure-as-Code (IaC) files for securi
 
 - **Dockerfile Analysis**: Detect security vulnerabilities and optimize Docker images with over 40 checks.
 - **Docker Compose**: Detect security vulnerabilities and misconfigurations.
-- **Kubernetes**: Detect security issues to align with the NSA Kubernetes Hardening Guide [wip].
+- **Kubernetes**: Detect security issues to align with the Pod Security Standards.
 - **Quick Fixes**: Resolve issues faster using built-in quick fixes.
 
 ## What problems can the plugin detect?
@@ -37,8 +37,7 @@ You can find more information about detected problems:
 
 ## Planned features
 
-- **Kubernetes**: Implementing rules to align with the NSA Kubernetes Hardening Guide.
-- **and more**: Expanding support for other IaC tools and formats to comprehensively protect and optimize your infrastructure configurations.
+- **Kubernetes**: Implementing more rules to align with the NSA and CISA Kubernetes Hardening Guide.
 
 ## References
 

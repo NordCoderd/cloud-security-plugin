@@ -17,3 +17,11 @@ class ReplaceValueToTrueQuickFix(@IntentionFamilyName private val message: Strin
 class ReplaceValueToRuntimeDefaultQuickFix(@IntentionFamilyName private val message: String) : ReplaceValueWithEnumQuickFix(message)  {
     override val enumValue: ReplacedValueEnum = ReplacedValueEnum.RUNTIME_DEFAULT
 }
+
+class ReplaceValueToBlankQuickFix(@IntentionFamilyName private val message: String) : ReplaceValueWithEnumQuickFix(message)  {
+    override val enumValue: ReplacedValueEnum = ReplacedValueEnum.EMPTY_STRING
+}
+
+class ReplaceValueToDefaultQuickFix(@IntentionFamilyName private val message: String) : ReplaceValueWithEnumQuickFix(message)  {
+    override val enumValue: ReplacedValueEnum = ReplacedValueEnum.DEFAULT
+}

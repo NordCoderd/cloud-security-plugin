@@ -11,39 +11,38 @@ import dev.protsenko.securityLinter.utils.YamlPath
 import org.jetbrains.yaml.psi.YAMLDocument
 import org.jetbrains.yaml.psi.YAMLScalar
 
-class AppArmorOverrideInspection : LocalInspectionTool() {
+class SeccompProfileInspection : LocalInspectionTool() {
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : BaseKubernetesVisitor() {
             override fun analyze(specPrefix: String, document: YAMLDocument) {
-                val appArmorProfileType = YamlPath.findByYamlPath(
-                    "$specPrefix$APP_ARMOR_PROFILE_TYPE",
+                val seccompProfileType = YamlPath.findByYamlPath(
+                    "$specPrefix$SECCOMP_PROFILE_TYPE",
                     document
                 ) as? YAMLScalar
 
-                highlightIfProblem(appArmorProfileType)
+                highlightIfProblem(seccompProfileType)
 
                 val containers = containers(specPrefix, document)
                 for (container in containers) {
-                    val appArmorProfileType = YamlPath.findByYamlPath(
-                        APP_ARMOR_PROFILE_PATH,
+                    val seccompProfileType = YamlPath.findByYamlPath(
+                        SECCOMP_PROFILE_PATH,
                         container
                     ) as? YAMLScalar ?: continue
 
-                    highlightIfProblem(appArmorProfileType)
+                    highlightIfProblem(seccompProfileType)
                 }
             }
 
-            //TODO: verify metadata (in docs in beta version)
-            private fun highlightIfProblem(appArmorProfileType: YAMLScalar?) {
-                if (appArmorProfileType != null && appArmorProfileType.textValue !in allowedProfiles) {
+            private fun highlightIfProblem(seccompProfileType: YAMLScalar?) {
+                if (seccompProfileType != null && seccompProfileType.textValue !in allowedProfiles) {
                     val descriptor = HtmlProblemDescriptor(
-                        appArmorProfileType,
-                        SecurityPluginBundle.message("kube007.documentation"),
-                        SecurityPluginBundle.message("kube007.apparmor-disabled-or-override"),
+                        seccompProfileType,
+                        SecurityPluginBundle.message("kube010.documentation"),
+                        SecurityPluginBundle.message("kube010.problem-text"),
                         ProblemHighlightType.ERROR, arrayOf(
                             ReplaceValueToRuntimeDefaultQuickFix(
-                                SecurityPluginBundle.message("kube007.qf.fix-value"),
+                                SecurityPluginBundle.message("kube010.qf.fix-value"),
                             )
                         )
                     )
@@ -54,6 +53,7 @@ class AppArmorOverrideInspection : LocalInspectionTool() {
         }
     }
 }
-private const val APP_ARMOR_PROFILE_PATH = "securityContext.appArmorProfile.type"
-private const val APP_ARMOR_PROFILE_TYPE = "spec.$APP_ARMOR_PROFILE_PATH"
-private val allowedProfiles = setOf("RuntimeDefault", "Localhost", "")
+
+private const val SECCOMP_PROFILE_PATH = "securityContext.seccompProfile.type"
+private const val SECCOMP_PROFILE_TYPE = "spec.$SECCOMP_PROFILE_PATH"
+private val allowedProfiles = setOf("RuntimeDefault", "Localhost")

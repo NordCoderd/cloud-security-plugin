@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: influxdb
+spec:
+  containers:
+    - name: influxdb
+      image: influxdb
+      securityContext:
+        procMount: <error descr="Any procMount value other than 'Default' exposes sensitive kernel interfaces and host-level data to the container.">Unmasked</error>

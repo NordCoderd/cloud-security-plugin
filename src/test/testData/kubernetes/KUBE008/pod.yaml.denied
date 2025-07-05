@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-selinux-container
+spec:
+  securityContext:
+    seLinuxOptions:
+      <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">user: "system_u"</error>
+      <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">role: "system_r"</error>
+      <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">type: "spc_t"</error>
+  containers:
+    - name: nginx
+      image: nginx:1.29-alpine
+      ports:
+        - containerPort: 80
+      securityContext:
+        seLinuxOptions:
+          <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">user: "system_u"</error>
+          <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">role: "system_r"</error>
+          <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">type: "spc_t"</error>

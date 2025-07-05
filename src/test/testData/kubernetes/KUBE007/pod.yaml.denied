@@ -5,7 +5,10 @@ metadata:
 spec:
   securityContext:
     appArmorProfile:
-      type: <error descr="AppArmor profile disabled or overridden - container loses kernel protection. Use RuntimeDefault or remove profile type">privileged</error>
+      type: <error descr="AppArmor profile disabled or overridden - container loses kernel protection. Use RuntimeDefault or remove a profile type.">privileged</error>
   containers:
     - name: influxdb
       image: influxdb
+      securityContext:
+        appArmorProfile:
+          type: <error descr="AppArmor profile disabled or overridden - container loses kernel protection. Use RuntimeDefault or remove a profile type.">privileged</error>

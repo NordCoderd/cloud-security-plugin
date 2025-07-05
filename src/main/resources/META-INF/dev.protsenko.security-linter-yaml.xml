@@ -47,7 +47,22 @@
                 enabledByDefault="true" language="yaml"/>
         <localInspection
                 implementationClass="dev.protsenko.securityLinter.kubernetes.AppArmorOverrideInspection"
-                displayName="AppArmor or SELinux override"
+                displayName="AppArmor override"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.SettingSELinuxInspection"
+                displayName="Setting custom SELinux options"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.InsecureProcMount"
+                displayName="Non-Default /proc mount"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.SeccompProfileInspection"
+                displayName="Unconfined seccomp profile"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
     </extensions>

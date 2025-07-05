@@ -2,6 +2,13 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.4] 05-07-2025
+
+### Added
+- Kubernetes Security Standards: [Setting custom SELinux options](https://protsenko.dev/infrastructure-security/setting-selinux-is-restricted/)
+- Kubernetes Security Standards: [Non-Default /proc mount](https://protsenko.dev/infrastructure-security/insecure-proc-mount/)
+- Kubernetes Security Standards: [Unconfined seccomp profile](https://protsenko.dev/infrastructure-security/insecure-seccomp-profile/)
+
 ## [2.0.3] 22-06-2025
 
 ### Changed
