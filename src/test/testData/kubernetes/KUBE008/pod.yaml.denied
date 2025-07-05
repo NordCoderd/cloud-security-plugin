@@ -5,9 +5,9 @@ metadata:
 spec:
   securityContext:
     seLinuxOptions:
-      <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">user: "system_u"</error>
-      <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">role: "system_r"</error>
-      <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">type: "spc_t"</error>
+      user: <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">"system_u"</error>
+      role: <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">"system_r"</error>
+      type: <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">"spc_t"</error>
   containers:
     - name: nginx
       image: nginx:1.29-alpine
@@ -15,6 +15,6 @@ spec:
         - containerPort: 80
       securityContext:
         seLinuxOptions:
-          <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">user: "system_u"</error>
-          <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">role: "system_r"</error>
-          <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">type: "spc_t"</error>
+          user: <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">"system_u"</error>
+          role: <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">"system_r"</error>
+          type: <error descr="Setting the SELinux type is restricted, and setting a custom SELinux user or role option is forbidden.">"spc_t"</error>
