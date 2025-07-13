@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: safe-sysctl-demo
+  labels:
+    app: demo
+spec:
+  securityContext:
+    sysctls:
+      - name: net.ipv4.ip_local_port_range
+        value: "1024 65535"
+      - name: net.ipv4.tcp_syncookies
+        value: "1"
+      - name: net.ipv4.tcp_keepalive_time     # ≥ 1.29
+        value: "7200"
+      - name: net.ipv4.tcp_keepalive_intvl    # ≥ 1.29
+        value: "75"
+      - name: net.ipv4.tcp_keepalive_probes   # ≥ 1.29
+        value: "9"
+  containers:
+    - name: nginx
+      image: nginx:1.29-alpine
+      ports:
+        - containerPort: 80
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+        readOnlyRootFilesystem: true

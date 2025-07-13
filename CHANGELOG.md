@@ -2,6 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.5] 13-07-2025
+
+### Added
+- Kubernetes Security Standards: [Insecure sysctls](https://protsenko.dev/infrastructure-security/insecure-sysctls/)
+
 ## [2.0.4] 05-07-2025
 
 ### Added

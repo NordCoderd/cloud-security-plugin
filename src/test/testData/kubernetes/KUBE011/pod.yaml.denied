@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsafe-sysctl-demo
+spec:
+  securityContext:
+    sysctls:
+      <error descr="Sysctls can disable security mechanisms or affect all containers on a host, and should be disallowed except for an allowed \"safe\" subset.">- name: net.core.somaxconn
+        value: "1024"</error>
+      <error descr="Sysctls can disable security mechanisms or affect all containers on a host, and should be disallowed except for an allowed \"safe\" subset.">- name: kernel.msgmax
+        value: "65536"</error>
+  containers:
+    - name: nginx
+      image: nginx:1.29-alpine
+      ports:
+        - containerPort: 80

@@ -65,5 +65,10 @@
                 displayName="Unconfined seccomp profile"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.InsecureSysctlsInspection"
+                displayName="Insecure systctls"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
     </extensions>
 </idea-plugin>

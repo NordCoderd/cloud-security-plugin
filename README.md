@@ -11,7 +11,7 @@
 
 Cloud (IaC) Security Linter for JetBrains IDEs (e.g., IntelliJ IDEA, PyCharm, WebStorm, and more).
 
-Scan Docker, Kubernetes, and other Infrastructure-as-Code (IaC) files for security vulnerabilities and misconfigurations directly within your JetBrains IDE.
+Scan Docker (dockerfile and compose), Kubernetes files for security vulnerabilities and misconfigurations directly within your JetBrains IDE.
 
 ## Why this plugin?
 
