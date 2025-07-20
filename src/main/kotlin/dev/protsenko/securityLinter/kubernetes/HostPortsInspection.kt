@@ -32,7 +32,7 @@ class HostPortsInspection : LocalInspectionTool() {
                             val descriptor = HtmlProblemDescriptor(
                                 port,
                                 SecurityPluginBundle.message("kube006.documentation"),
-                                SecurityPluginBundle.message("kube006.host-ports"),
+                                SecurityPluginBundle.message("kube006.problem-text"),
                                 ProblemHighlightType.ERROR, emptyArray()
                             )
 

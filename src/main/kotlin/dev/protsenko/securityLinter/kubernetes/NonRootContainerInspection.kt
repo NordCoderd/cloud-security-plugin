@@ -58,7 +58,7 @@ class NonRootContainerInspection : LocalInspectionTool() {
             val descriptor = HtmlProblemDescriptor(
                 element,
                 SecurityPluginBundle.message("kube001.documentation"),
-                SecurityPluginBundle.message("kube001.non-root-containers"),
+                SecurityPluginBundle.message("kube001.problem-text"),
                 ProblemHighlightType.ERROR, arrayOf(
                     ReplaceValueToTrueQuickFix(SecurityPluginBundle.message("kube001.qf.fix-run-as-non-root"))
                 )
@@ -79,7 +79,7 @@ class NonRootContainerInspection : LocalInspectionTool() {
             val descriptor = HtmlProblemDescriptor(
                 element,
                 SecurityPluginBundle.message("kube001.documentation"),
-                SecurityPluginBundle.message("kube001.non-root-containers"),
+                SecurityPluginBundle.message("kube001.problem-text"),
                 ProblemHighlightType.ERROR, arrayOf(
                     ReplaceValueTo1000QuickFix(SecurityPluginBundle.message("kube001.qf.fix-run-as-user-or-group"))
                 )

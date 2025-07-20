@@ -40,7 +40,7 @@ class AppArmorOverrideInspection : LocalInspectionTool() {
                     val descriptor = HtmlProblemDescriptor(
                         appArmorProfileType,
                         SecurityPluginBundle.message("kube007.documentation"),
-                        SecurityPluginBundle.message("kube007.apparmor-disabled-or-override"),
+                        SecurityPluginBundle.message("kube007.problem-text"),
                         ProblemHighlightType.ERROR, arrayOf(
                             ReplaceValueToRuntimeDefaultQuickFix(
                                 SecurityPluginBundle.message("kube007.qf.fix-value"),

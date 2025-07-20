@@ -26,7 +26,7 @@ class HostNetworkPidIpcInspection : LocalInspectionTool() {
                         val descriptor = HtmlProblemDescriptor(
                             key,
                             SecurityPluginBundle.message("kube003.documentation"),
-                            SecurityPluginBundle.message("kube003.host-network-pid-ipc"),
+                            SecurityPluginBundle.message("kube003.problem-text"),
                             ProblemHighlightType.ERROR, arrayOf(
                                 ReplaceValueToFalseQuickFix(
                                     SecurityPluginBundle.message("kube003.qf.fix-value", keyToVerify)

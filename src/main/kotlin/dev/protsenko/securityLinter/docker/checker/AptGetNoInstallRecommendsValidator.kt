@@ -13,7 +13,7 @@ object AptGetNoInstallRecommendsValidator : RunCommandValidator {
      * - `(?:(?!--no-install-recommends).)*$`: Negative lookahead to ensure "--no-install-recommends" does not appear anywhere after "apt-get install".
      */
     private val aptGetInstallWithoutNoRecommendsRegex = Regex(
-        pattern = "(?i)^RUN\\s+.*\\bapt-get\\b(?:(?!--no-install-recommends).)*\\binstall\\b(?:(?!--no-install-recommends).)*\$",
+        pattern = "(?i)^RUN\\s+.*\\bapt-get\\b(?:(?!--no-install-recommends).)*\\binstall\\b(?:(?!--no-install-recommends).)*$",
         options = setOf(RegexOption.DOT_MATCHES_ALL)
     )
 

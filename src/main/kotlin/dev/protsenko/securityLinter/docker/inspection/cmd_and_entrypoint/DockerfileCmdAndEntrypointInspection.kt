@@ -24,7 +24,7 @@ class DockerfileCmdAndEntrypointInspection: LocalInspectionTool() {
                     return
                 }
                 val fromCommands = file.findChildrenByClass(DockerFileFromCommand::class.java)
-                val buildStages = fromCommands.associate { it.textOffset to it }
+                val buildStages = fromCommands.associateBy { it.textOffset }
 
                 val cmdCommands = file.findChildrenByClass(DockerFileCmdCommand::class.java).toList()
                 cmdCommands.forEach { cmd ->

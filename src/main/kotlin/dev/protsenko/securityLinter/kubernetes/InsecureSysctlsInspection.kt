@@ -6,10 +6,8 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import dev.protsenko.securityLinter.core.HtmlProblemDescriptor
 import dev.protsenko.securityLinter.core.SecurityPluginBundle
-import dev.protsenko.securityLinter.kubernetes.quickfix.ReplaceValueToDefaultQuickFix
 import dev.protsenko.securityLinter.utils.YamlPath
 import org.jetbrains.yaml.psi.YAMLDocument
-import org.jetbrains.yaml.psi.YAMLScalar
 import org.jetbrains.yaml.psi.YAMLSequence
 
 class InsecureSysctlsInspection : LocalInspectionTool() {
@@ -43,7 +41,7 @@ class InsecureSysctlsInspection : LocalInspectionTool() {
     }
 }
 
-private val SYSCTL_PATH = "spec.securityContext.sysctls"
+private const val SYSCTL_PATH = "spec.securityContext.sysctls"
 private val allowedSysctls = setOf(
     "",
     "kernel.shm_rmid_forced",

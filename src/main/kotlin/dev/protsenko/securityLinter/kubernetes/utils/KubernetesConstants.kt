@@ -7,8 +7,6 @@ object KubernetesConstants {
 
     val containerTypes = listOf("spec.containers", "spec.initContainers", "spec.ephemeralContainers")
 
-    const val SPEC = "spec"
-    const val SECURITY_CONTEXT = "spec.securityContext"
     const val RUN_AS_NON_ROOT = "securityContext.runAsNonRoot"
     const val RUN_AS_USER = "securityContext.runAsUser"
     const val RUN_AS_GROUP = "securityContext.runAsGroup"

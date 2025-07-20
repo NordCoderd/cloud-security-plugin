@@ -33,7 +33,7 @@ class InsecureCapabilitiesInspection : LocalInspectionTool() {
                             val descriptor = HtmlProblemDescriptor(
                                 capabilityYamlValue,
                                 SecurityPluginBundle.message("kube002.documentation"),
-                                SecurityPluginBundle.message("kube002.insecure-capabilities"),
+                                SecurityPluginBundle.message("kube002.problem-text"),
                                 ProblemHighlightType.ERROR, emptyArray()
                             )
 

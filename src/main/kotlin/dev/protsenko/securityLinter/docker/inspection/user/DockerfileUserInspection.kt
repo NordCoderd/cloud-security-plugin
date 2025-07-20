@@ -33,9 +33,9 @@ class DockerfileUserInspection : LocalInspectionTool() {
                 if (file !is DockerPsiFile) return
 
                 val buildStages = file.findChildrenByClass(DockerFileFromCommand::class.java)
-                    .associate { it.textOffset to it }
+                    .associateBy { it.textOffset }
                 val resolvedUsers = file.findChildrenByClass(DockerFileUserCommand::class.java)
-                    .associate { it.textOffset to it }
+                    .associateBy { it.textOffset }
 
                 val lastStageOffset = buildStages.keys.maxOrNull() ?: return
                 val lastUserOffset = resolvedUsers.keys.maxOrNull()

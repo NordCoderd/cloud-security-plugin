@@ -2,6 +2,13 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.6] 21-07-2025
+
+### Changed
+- Naming of fields for internalization
+- Performed small refactoring
+- Added referral for documentation site
+
 ## [2.0.5] 13-07-2025
 
 ### Added

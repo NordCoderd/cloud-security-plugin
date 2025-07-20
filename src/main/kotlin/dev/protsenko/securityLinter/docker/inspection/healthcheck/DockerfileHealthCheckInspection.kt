@@ -25,7 +25,7 @@ class DockerfileHealthCheckInspection: LocalInspectionTool() {
                     return
                 }
                 val fromCommands = file.findChildrenByClass(DockerFileFromCommand::class.java)
-                val buildStages = fromCommands.associate { it.textOffset to it }
+                val buildStages = fromCommands.associateBy { it.textOffset }
                 val lastStage = buildStages.keys.maxOrNull() ?: return
 
                 val healthChecks = file.findChildrenByClass(DockerFileHealthCheckCommand::class.java)

@@ -43,7 +43,7 @@ class SettingSELinuxInspection : LocalInspectionTool() {
                     val descriptor = HtmlProblemDescriptor(
                         typeValue.value!!,
                         SecurityPluginBundle.message("kube008.documentation"),
-                        SecurityPluginBundle.message("kube008.setting-selinux-is-restricted"),
+                        SecurityPluginBundle.message("kube008.problem-text"),
                         ProblemHighlightType.ERROR, arrayOf(
                             ReplaceValueToBlankQuickFix(
                                 SecurityPluginBundle.message("kube008.qf.fix-value"),
@@ -60,7 +60,7 @@ class SettingSELinuxInspection : LocalInspectionTool() {
                         val descriptor = HtmlProblemDescriptor(
                             value.value!!,
                             SecurityPluginBundle.message("kube008.documentation"),
-                            SecurityPluginBundle.message("kube008.setting-selinux-is-restricted"),
+                            SecurityPluginBundle.message("kube008.problem-text"),
                             ProblemHighlightType.ERROR, arrayOf(
                                 ReplaceValueToBlankQuickFix(
                                     SecurityPluginBundle.message("kube008.qf.fix-value"),

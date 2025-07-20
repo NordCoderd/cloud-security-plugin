@@ -4,14 +4,9 @@ import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.PsiFile
 import dev.protsenko.securityLinter.core.HtmlProblemDescriptor
 import dev.protsenko.securityLinter.core.SecurityPluginBundle
-import dev.protsenko.securityLinter.kubernetes.quickfix.ReplaceValueToFalseQuickFix
-import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.evaluateSpecPrefix
-import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.supportedKinds
 import dev.protsenko.securityLinter.utils.YamlPath
-import org.jetbrains.yaml.YAMLUtil
 import org.jetbrains.yaml.psi.*
 
 class HostPathVolumesInspection : LocalInspectionTool() {
@@ -28,7 +23,7 @@ class HostPathVolumesInspection : LocalInspectionTool() {
                     val descriptor = HtmlProblemDescriptor(
                         volumeValue,
                         SecurityPluginBundle.message("kube005.documentation"),
-                        SecurityPluginBundle.message("kube005.host-path-volumes"),
+                        SecurityPluginBundle.message("kube005.problem-text"),
                         ProblemHighlightType.ERROR, emptyArray()
                     )
                     holder.registerProblem(descriptor)
