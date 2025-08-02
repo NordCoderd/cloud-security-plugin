@@ -32,7 +32,7 @@ Scan Docker (dockerfile and compose), Kubernetes files for security vulnerabilit
 
 You can find more information about detected problems:
 
-- [Documentation site](https://protsenko.dev/infrastructure-security)
+- <a href="https://protsenko.dev/infrastructure-security">Detailed documentation on the bundled Cloud Security inspection</a>
 - In-IDE pop-up messages describing each issue, each of which links to a dedicated article in the documentation
 
 ## Planned features
