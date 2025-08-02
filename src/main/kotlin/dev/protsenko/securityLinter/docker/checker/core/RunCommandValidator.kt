@@ -1,7 +1,6 @@
 package dev.protsenko.securityLinter.docker.checker.core
 
 interface RunCommandValidator {
-
     /**
      * Every command must start with RUN and contain a shell script (Linux commands).
      * Before implementing, please follow these guidelines:

@@ -1,4 +1,4 @@
-package dev.protsenko.securityLinter.docker.inspection.cmd_and_entrypoint
+package dev.protsenko.securityLinter.docker.inspection.cmdAndEntrypoint
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
@@ -13,14 +13,17 @@ import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.core.quickFix.DeletePsiElementQuickFix
 import dev.protsenko.securityLinter.core.quickFix.ReplaceWithJsonNotationQuickFix
 
-class DockerfileCmdAndEntrypointInspection: LocalInspectionTool() {
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        if (holder.file !is DockerPsiFile){
+class DockerfileCmdAndEntrypointInspection : LocalInspectionTool() {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor {
+        if (holder.file !is DockerPsiFile) {
             return EMPTY_VISITOR
         }
-        return object: DockerFileVisitor(){
+        return object : DockerFileVisitor() {
             override fun visitFile(file: PsiFile) {
-                if (file !is DockerPsiFile){
+                if (file !is DockerPsiFile) {
                     return
                 }
                 val fromCommands = file.findChildrenByClass(DockerFileFromCommand::class.java)
@@ -41,35 +44,38 @@ class DockerfileCmdAndEntrypointInspection: LocalInspectionTool() {
 
             private fun verifyInstructions(
                 elementList: List<DockerPsiExecOrShellCommand>,
-                buildStages: Map<Int, DockerFileFromCommand>
-            ){
+                buildStages: Map<Int, DockerFileFromCommand>,
+            ) {
                 val lastStage = buildStages.keys.maxOrNull() ?: return
-                val lastInstructions = elementList.filter {
-                    it.textOffset > lastStage
-                }
-                if (lastInstructions.size > 1){
+                val lastInstructions =
+                    elementList.filter {
+                        it.textOffset > lastStage
+                    }
+                if (lastInstructions.size > 1) {
                     for (instruction in lastInstructions.dropLast(1)) {
-                        val descriptor = HtmlProblemDescriptor(
-                            instruction,
-                            SecurityPluginBundle.message("dsf004.documentation"),
-                            SecurityPluginBundle.message("dfs004.only-one-cmd-or-entrypoint"),
-                            ProblemHighlightType.ERROR,
-                            arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs004.remove-redundant-instruction")))
-                        )
+                        val descriptor =
+                            HtmlProblemDescriptor(
+                                instruction,
+                                SecurityPluginBundle.message("dsf004.documentation"),
+                                SecurityPluginBundle.message("dfs004.only-one-cmd-or-entrypoint"),
+                                ProblemHighlightType.ERROR,
+                                arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs004.remove-redundant-instruction"))),
+                            )
 
                         holder.registerProblem(descriptor)
                     }
                 }
             }
 
-            private fun registerJsonNotationProblem(element: DockerPsiExecOrShellCommand){
-                val descriptor = HtmlProblemDescriptor(
-                    element,
-                    SecurityPluginBundle.message("dfs005.documentation"),
-                    SecurityPluginBundle.message("dfs005.use-json-notation"),
-                    ProblemHighlightType.WARNING,
-                    arrayOf(ReplaceWithJsonNotationQuickFix())
-                )
+            private fun registerJsonNotationProblem(element: DockerPsiExecOrShellCommand) {
+                val descriptor =
+                    HtmlProblemDescriptor(
+                        element,
+                        SecurityPluginBundle.message("dfs005.documentation"),
+                        SecurityPluginBundle.message("dfs005.use-json-notation"),
+                        ProblemHighlightType.WARNING,
+                        arrayOf(ReplaceWithJsonNotationQuickFix()),
+                    )
 
                 holder.registerProblem(descriptor)
             }

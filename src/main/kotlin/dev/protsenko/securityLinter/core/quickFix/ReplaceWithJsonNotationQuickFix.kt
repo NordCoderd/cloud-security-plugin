@@ -12,31 +12,37 @@ import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.utils.PsiElementGenerator
 
 class ReplaceWithJsonNotationQuickFix : LocalQuickFix {
-    override fun getFamilyName(): @IntentionFamilyName String =
-        SecurityPluginBundle.message("dfs005.replace-with-json-notation")
+    override fun getFamilyName(): @IntentionFamilyName String = SecurityPluginBundle.message("dfs005.replace-with-json-notation")
 
-    override fun generatePreview(project: Project, previewDescriptor: ProblemDescriptor): IntentionPreviewInfo =
-        IntentionPreviewInfo.EMPTY
+    override fun generatePreview(
+        project: Project,
+        previewDescriptor: ProblemDescriptor,
+    ): IntentionPreviewInfo = IntentionPreviewInfo.EMPTY
 
-    override fun applyFix(project: Project, problemDescriptor: ProblemDescriptor) {
+    override fun applyFix(
+        project: Project,
+        problemDescriptor: ProblemDescriptor,
+    ) {
         val psiElement = problemDescriptor.psiElement as? DockerPsiExecOrShellCommand ?: return
-        val dockerCommand = when (psiElement) {
-            is DockerFileCmdCommand -> "CMD"
-            is DockerFileEntrypointCommand -> "ENTRYPOINT"
-            else -> return
-        }
-        val shellCommand = psiElement.text
-            .removePrefix(dockerCommand)
-            .trim()
-            .split("\\s+".toRegex())
-            .joinToString(
-                prefix = "$dockerCommand [ ",
-                postfix = " ]",
-                separator = ","
-            ) { "\"${it}\"" }
+        val dockerCommand =
+            when (psiElement) {
+                is DockerFileCmdCommand -> "CMD"
+                is DockerFileEntrypointCommand -> "ENTRYPOINT"
+                else -> return
+            }
+        val shellCommand =
+            psiElement.text
+                .removePrefix(dockerCommand)
+                .trim()
+                .split("\\s+".toRegex())
+                .joinToString(
+                    prefix = "$dockerCommand [ ",
+                    postfix = " ]",
+                    separator = ",",
+                ) { "\"${it}\"" }
 
-            val psiCommand =
-                PsiElementGenerator.fromText<DockerPsiExecOrShellCommand>(project, shellCommand) ?: return
-            problemDescriptor.psiElement.replace(psiCommand)
+        val psiCommand =
+            PsiElementGenerator.fromText<DockerPsiExecOrShellCommand>(project, shellCommand) ?: return
+        problemDescriptor.psiElement.replace(psiCommand)
     }
 }

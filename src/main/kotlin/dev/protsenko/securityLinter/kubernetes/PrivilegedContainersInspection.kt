@@ -13,10 +13,15 @@ import dev.protsenko.securityLinter.utils.YamlPath
 import org.jetbrains.yaml.psi.*
 
 class PrivilegedContainersInspection : LocalInspectionTool() {
-
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : BaseKubernetesVisitor() {
-            override fun analyze(specPrefix: String, document: YAMLDocument) {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor =
+        object : BaseKubernetesVisitor() {
+            override fun analyze(
+                specPrefix: String,
+                document: YAMLDocument,
+            ) {
                 val containers = containers(specPrefix, document)
                 for (containerItem in containers) {
                     val isPrivilegedElement =
@@ -31,22 +36,23 @@ class PrivilegedContainersInspection : LocalInspectionTool() {
                         if (elementToValidate !is YAMLScalar) continue
                         val booleanValue = elementToValidate.textValue.toBooleanStrictOrNull()
 
-                        if (booleanValue != false){
-                            val descriptor = HtmlProblemDescriptor(
-                                elementToValidate,
-                                SecurityPluginBundle.message("kube004.documentation"),
-                                SecurityPluginBundle.message("kube004.problem-text"),
-                                ProblemHighlightType.ERROR, arrayOf(
-                                    ReplaceValueToFalseQuickFix(
-                                        SecurityPluginBundle.message("kube004.qf.fix-value")
-                                    )
+                        if (booleanValue != false) {
+                            val descriptor =
+                                HtmlProblemDescriptor(
+                                    elementToValidate,
+                                    SecurityPluginBundle.message("kube004.documentation"),
+                                    SecurityPluginBundle.message("kube004.problem-text"),
+                                    ProblemHighlightType.ERROR,
+                                    arrayOf(
+                                        ReplaceValueToFalseQuickFix(
+                                            SecurityPluginBundle.message("kube004.qf.fix-value"),
+                                        ),
+                                    ),
                                 )
-                            )
                             holder.registerProblem(descriptor)
                         }
                     }
                 }
             }
         }
-    }
 }

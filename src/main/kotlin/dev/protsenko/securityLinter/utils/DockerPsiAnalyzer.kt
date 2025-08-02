@@ -5,7 +5,6 @@ import com.intellij.docker.dockerFile.parser.psi.DockerFileVariableRefSimple
 import com.intellij.docker.dockerFile.parser.psi.DockerPsiCommand
 
 object DockerPsiAnalyzer {
-
     /**
      * By some reasons Docker plugin in some cases return PSI elements without children.
      * In that case we should retrieve value of docker command.
@@ -13,14 +12,9 @@ object DockerPsiAnalyzer {
      * TODO: cache values by the element
      * returns: value in lowercase
      */
-    fun splitCommand(dockerElement: DockerPsiCommand): List<String> {
-        return splitCommand(dockerElement.text)
-    }
+    fun splitCommand(dockerElement: DockerPsiCommand): List<String> = splitCommand(dockerElement.text)
 
-    fun splitCommand(text: String): List<String> {
-        return text.trim().split(" ").map { it.trim() }
-    }
-
+    fun splitCommand(text: String): List<String> = text.trim().split(" ").map { it.trim() }
 }
 
 fun DockerFileVariableRefSimple.resolveVariable(): String? {

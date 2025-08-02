@@ -8,15 +8,20 @@ import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.docker.checker.PackageManagerAutoYesValidator
 import dev.protsenko.securityLinter.docker.inspection.run.core.DockerfileRunAnalyzer
 
-class PackageManagerAutoYesAnalyzer: DockerfileRunAnalyzer {
-    override fun handle(runCommand: String, psiElement: PsiElement, holder: ProblemsHolder) {
-        if (!PackageManagerAutoYesValidator.isValid(runCommand)){
-            val descriptor = HtmlProblemDescriptor(
-                psiElement,
-                SecurityPluginBundle.message("dfs020.documentation"),
-                SecurityPluginBundle.message("dfs020.use-package-manager-auto-confirm"),
-                ProblemHighlightType.WARNING
-            )
+class PackageManagerAutoYesAnalyzer : DockerfileRunAnalyzer {
+    override fun handle(
+        runCommand: String,
+        psiElement: PsiElement,
+        holder: ProblemsHolder,
+    ) {
+        if (!PackageManagerAutoYesValidator.isValid(runCommand)) {
+            val descriptor =
+                HtmlProblemDescriptor(
+                    psiElement,
+                    SecurityPluginBundle.message("dfs020.documentation"),
+                    SecurityPluginBundle.message("dfs020.use-package-manager-auto-confirm"),
+                    ProblemHighlightType.WARNING,
+                )
 
             holder.registerProblem(descriptor)
         }

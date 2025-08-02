@@ -9,14 +9,19 @@ import dev.protsenko.securityLinter.docker.checker.ZypperInstallWithoutCleanVali
 import dev.protsenko.securityLinter.docker.inspection.run.core.DockerfileRunAnalyzer
 
 class ZypperInstallWithoutCleanAnalyzer : DockerfileRunAnalyzer {
-    override fun handle(runCommand: String, psiElement: PsiElement, holder: ProblemsHolder) {
+    override fun handle(
+        runCommand: String,
+        psiElement: PsiElement,
+        holder: ProblemsHolder,
+    ) {
         if (!ZypperInstallWithoutCleanValidator.isValid(runCommand)) {
-            val descriptor = HtmlProblemDescriptor(
-                psiElement,
-                SecurityPluginBundle.message("dfs025.documentation"),
-                SecurityPluginBundle.message("dfs025.purge-zipper-cache"),
-                ProblemHighlightType.WARNING
-            )
+            val descriptor =
+                HtmlProblemDescriptor(
+                    psiElement,
+                    SecurityPluginBundle.message("dfs025.documentation"),
+                    SecurityPluginBundle.message("dfs025.purge-zipper-cache"),
+                    ProblemHighlightType.WARNING,
+                )
 
             holder.registerProblem(descriptor)
         }

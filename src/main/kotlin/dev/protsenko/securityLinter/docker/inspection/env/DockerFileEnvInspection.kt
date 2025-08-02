@@ -14,8 +14,11 @@ import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.core.quickFix.DeletePsiElementQuickFix
 
 class DockerFileEnvInspection : LocalInspectionTool() {
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        if (holder.file !is DockerPsiFile){
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor {
+        if (holder.file !is DockerPsiFile) {
             return EMPTY_VISITOR
         }
         return object : DockerFileVisitor() {
@@ -23,13 +26,14 @@ class DockerFileEnvInspection : LocalInspectionTool() {
                 o.envRegularDeclarationList.forEach {
                     val declaredName = it.declaredName.text.uppercase()
                     if (!POTENTIAL_SECRETS_NAME.contains(declaredName)) return@forEach
-                    val descriptor = HtmlProblemDescriptor(
-                        o,
-                        SecurityPluginBundle.message("dfs009.documentation"),
-                        SecurityPluginBundle.message("dfs009.possible-secrets-in-env", declaredName),
-                        ProblemHighlightType.ERROR,
-                        arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs009.remove-env-with-secret")))
-                    )
+                    val descriptor =
+                        HtmlProblemDescriptor(
+                            o,
+                            SecurityPluginBundle.message("dfs009.documentation"),
+                            SecurityPluginBundle.message("dfs009.possible-secrets-in-env", declaredName),
+                            ProblemHighlightType.ERROR,
+                            arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs009.remove-env-with-secret"))),
+                        )
 
                     holder.registerProblem(descriptor)
                 }

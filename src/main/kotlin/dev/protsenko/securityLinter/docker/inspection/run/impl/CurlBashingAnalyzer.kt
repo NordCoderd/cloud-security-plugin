@@ -9,15 +9,20 @@ import dev.protsenko.securityLinter.docker.checker.CurlBashingValidator
 import dev.protsenko.securityLinter.docker.inspection.run.core.DockerfileRunAnalyzer
 
 class CurlBashingAnalyzer : DockerfileRunAnalyzer {
-    override fun handle(runCommand: String, psiElement: PsiElement, holder: ProblemsHolder) {
+    override fun handle(
+        runCommand: String,
+        psiElement: PsiElement,
+        holder: ProblemsHolder,
+    ) {
         if (!CurlBashingValidator.isValid(runCommand)) {
-            val descriptor = HtmlProblemDescriptor(
-                psiElement,
-                SecurityPluginBundle.message("dfs017.documentation"),
-                SecurityPluginBundle.message("dfs017.avoid-curl-bashing"),
-                ProblemHighlightType.ERROR,
-                emptyArray()
-            )
+            val descriptor =
+                HtmlProblemDescriptor(
+                    psiElement,
+                    SecurityPluginBundle.message("dfs017.documentation"),
+                    SecurityPluginBundle.message("dfs017.avoid-curl-bashing"),
+                    ProblemHighlightType.ERROR,
+                    emptyArray(),
+                )
 
             holder.registerProblem(descriptor)
         }

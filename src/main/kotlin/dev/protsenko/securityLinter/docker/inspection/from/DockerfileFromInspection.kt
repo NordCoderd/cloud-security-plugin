@@ -17,8 +17,10 @@ import dev.protsenko.securityLinter.utils.image.ImageDefinition
 import dev.protsenko.securityLinter.utils.image.ImageDefinitionCreator
 
 class DockerfileFromInspection : LocalInspectionTool() {
-
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor {
         if (holder.file !is DockerPsiFile) return EMPTY_VISITOR
 
         return object : DockerFileVisitor() {
@@ -37,13 +39,14 @@ class DockerfileFromInspection : LocalInspectionTool() {
                     val declaredStep = declaredStepName.text
 
                     if (aliasToImageDefinition.containsKey(declaredStep)) {
-                        val descriptor = HtmlProblemDescriptor(
-                            stageDeclaration,
-                            SecurityPluginBundle.message("dfs003.documentation"),
-                            SecurityPluginBundle.message("dfs003.no-duplicate-alias"),
-                            ProblemHighlightType.WARNING,
-                            arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs003.remove-duplicated-alias")))
-                        )
+                        val descriptor =
+                            HtmlProblemDescriptor(
+                                stageDeclaration,
+                                SecurityPluginBundle.message("dfs003.documentation"),
+                                SecurityPluginBundle.message("dfs003.no-duplicate-alias"),
+                                ProblemHighlightType.WARNING,
+                                arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs003.remove-duplicated-alias"))),
+                            )
 
                         holder.registerProblem(descriptor)
                     } else {

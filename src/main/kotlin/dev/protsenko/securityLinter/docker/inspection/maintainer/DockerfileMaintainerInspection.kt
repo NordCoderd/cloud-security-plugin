@@ -15,19 +15,23 @@ import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.utils.PsiElementGenerator
 
 class DockerfileMaintainerInspection : LocalInspectionTool() {
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor {
         if (holder.file !is DockerPsiFile) {
             return EMPTY_VISITOR
         }
         return object : DockerFileVisitor() {
             override fun visitMaintainerCommand(o: DockerFileMaintainerCommand) {
-                val descriptor = HtmlProblemDescriptor(
-                    o,
-                    SecurityPluginBundle.message("dfs013.documentation"),
-                    SecurityPluginBundle.message("dfs013.no-maintainer"),
-                    ProblemHighlightType.LIKE_DEPRECATED,
-                    arrayOf(ReplaceMaintainerWithLabel())
-                )
+                val descriptor =
+                    HtmlProblemDescriptor(
+                        o,
+                        SecurityPluginBundle.message("dfs013.documentation"),
+                        SecurityPluginBundle.message("dfs013.no-maintainer"),
+                        ProblemHighlightType.LIKE_DEPRECATED,
+                        arrayOf(ReplaceMaintainerWithLabel()),
+                    )
 
                 holder.registerProblem(descriptor)
             }
@@ -35,17 +39,17 @@ class DockerfileMaintainerInspection : LocalInspectionTool() {
     }
 
     private class ReplaceMaintainerWithLabel : LocalQuickFix {
-        companion object {
-            const val AUTHOR_LABEL = "LABEL org.opencontainers.image.authors=\""
-        }
+        override fun generatePreview(
+            project: Project,
+            previewDescriptor: ProblemDescriptor,
+        ): IntentionPreviewInfo = IntentionPreviewInfo.EMPTY
 
-        override fun generatePreview(project: Project, previewDescriptor: ProblemDescriptor): IntentionPreviewInfo =
-            IntentionPreviewInfo.EMPTY
+        override fun getFamilyName(): @IntentionFamilyName String = SecurityPluginBundle.message("dfs013.replace-maintainer")
 
-        override fun getFamilyName(): @IntentionFamilyName String =
-            SecurityPluginBundle.message("dfs013.replace-maintainer")
-
-        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+        override fun applyFix(
+            project: Project,
+            descriptor: ProblemDescriptor,
+        ) {
             val maintainer = descriptor.psiElement.text
             val authorText = maintainer.replace("MAINTAINER ", AUTHOR_LABEL).trim() + "\""
             val psiAuthor =
@@ -54,3 +58,5 @@ class DockerfileMaintainerInspection : LocalInspectionTool() {
         }
     }
 }
+
+private const val AUTHOR_LABEL = "LABEL org.opencontainers.image.authors=\""

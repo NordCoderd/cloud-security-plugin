@@ -22,7 +22,7 @@ class DockerfileUserInspection : LocalInspectionTool() {
     override fun buildVisitor(
         holder: ProblemsHolder,
         isOnTheFly: Boolean,
-        session: LocalInspectionToolSession
+        session: LocalInspectionToolSession,
     ): PsiElementVisitor {
         if (holder.file !is DockerPsiFile) {
             return EMPTY_VISITOR
@@ -32,22 +32,28 @@ class DockerfileUserInspection : LocalInspectionTool() {
             override fun visitFile(file: PsiFile) {
                 if (file !is DockerPsiFile) return
 
-                val buildStages = file.findChildrenByClass(DockerFileFromCommand::class.java)
-                    .associateBy { it.textOffset }
-                val resolvedUsers = file.findChildrenByClass(DockerFileUserCommand::class.java)
-                    .associateBy { it.textOffset }
+                val buildStages =
+                    file
+                        .findChildrenByClass(DockerFileFromCommand::class.java)
+                        .associateBy { it.textOffset }
+                val resolvedUsers =
+                    file
+                        .findChildrenByClass(DockerFileUserCommand::class.java)
+                        .associateBy { it.textOffset }
 
                 val lastStageOffset = buildStages.keys.maxOrNull() ?: return
                 val lastUserOffset = resolvedUsers.keys.maxOrNull()
 
                 val lastStage = buildStages[lastStageOffset] ?: return
                 if (lastUserOffset == null || lastUserOffset < lastStageOffset) {
-                    val descriptor = HtmlProblemDescriptor(
-                        lastStage,
-                        SecurityPluginBundle.message("dfs002.documentation"),
-                        SecurityPluginBundle.message("dfs002.missing-user"),
-                        ProblemHighlightType.ERROR, arrayOf(ReplaceOrAddUserQuickFix(replace = false))
-                    )
+                    val descriptor =
+                        HtmlProblemDescriptor(
+                            lastStage,
+                            SecurityPluginBundle.message("dfs002.documentation"),
+                            SecurityPluginBundle.message("dfs002.missing-user"),
+                            ProblemHighlightType.ERROR,
+                            arrayOf(ReplaceOrAddUserQuickFix(replace = false)),
+                        )
                     holder.registerProblem(descriptor)
                     return
                 }
@@ -55,30 +61,35 @@ class DockerfileUserInspection : LocalInspectionTool() {
                 val lastUser = resolvedUsers[lastUserOffset] ?: return
                 val variables = lastUser.variableRefSimpleList
 
-                val username = if (variables.isNotEmpty()) {
-                    val descriptor = HtmlProblemDescriptor(
-                        lastUser,
-                        SecurityPluginBundle.message("dfs002.documentation"),
-                        SecurityPluginBundle.message("dfs002.arg-in-user"),
-                        ProblemHighlightType.ERROR, arrayOf(ReplaceOrAddUserQuickFix(replace = true))
-                    )
-                    holder.registerProblem(descriptor)
+                val username =
+                    if (variables.isNotEmpty()) {
+                        val descriptor =
+                            HtmlProblemDescriptor(
+                                lastUser,
+                                SecurityPluginBundle.message("dfs002.documentation"),
+                                SecurityPluginBundle.message("dfs002.arg-in-user"),
+                                ProblemHighlightType.ERROR,
+                                arrayOf(ReplaceOrAddUserQuickFix(replace = true)),
+                            )
+                        holder.registerProblem(descriptor)
 
-                    val referencedNameVariable = variables.firstOrNull() ?: return
-                    referencedNameVariable.resolveVariable()
-                } else {
-                    val commandParts = DockerPsiAnalyzer.splitCommand(lastUser)
-                    if (commandParts.size != 2) return
-                    commandParts.lastOrNull()
-                }
+                        val referencedNameVariable = variables.firstOrNull() ?: return
+                        referencedNameVariable.resolveVariable()
+                    } else {
+                        val commandParts = DockerPsiAnalyzer.splitCommand(lastUser)
+                        if (commandParts.size != 2) return
+                        commandParts.lastOrNull()
+                    }
 
                 if (username != null && PROHIBITED_USERS.contains(username)) {
-                    val descriptor = HtmlProblemDescriptor(
-                        lastUser,
-                        SecurityPluginBundle.message("dfs002.documentation"),
-                        SecurityPluginBundle.message("dfs002.root-user-is-used"),
-                        ProblemHighlightType.ERROR, arrayOf(ReplaceOrAddUserQuickFix(replace = true))
-                    )
+                    val descriptor =
+                        HtmlProblemDescriptor(
+                            lastUser,
+                            SecurityPluginBundle.message("dfs002.documentation"),
+                            SecurityPluginBundle.message("dfs002.root-user-is-used"),
+                            ProblemHighlightType.ERROR,
+                            arrayOf(ReplaceOrAddUserQuickFix(replace = true)),
+                        )
 
                     holder.registerProblem(descriptor)
                 }
@@ -86,21 +97,25 @@ class DockerfileUserInspection : LocalInspectionTool() {
         }
     }
 
-    private class ReplaceOrAddUserQuickFix(private val replace: Boolean) : LocalQuickFix {
-        companion object {
-            const val USER_NOBODY = "USER nobody"
-        }
+    private class ReplaceOrAddUserQuickFix(
+        private val replace: Boolean,
+    ) : LocalQuickFix {
+        override fun generatePreview(
+            project: Project,
+            previewDescriptor: ProblemDescriptor,
+        ): IntentionPreviewInfo = IntentionPreviewInfo.EMPTY
 
-        override fun generatePreview(project: Project, previewDescriptor: ProblemDescriptor): IntentionPreviewInfo =
-            IntentionPreviewInfo.EMPTY
+        override fun getFamilyName(): @IntentionFamilyName String =
+            if (replace) {
+                SecurityPluginBundle.message("dfs002.replace-root-with-nobody")
+            } else {
+                SecurityPluginBundle.message("dfs002.add-nobody-user")
+            }
 
-        override fun getFamilyName(): @IntentionFamilyName String = if (replace) {
-            SecurityPluginBundle.message("dfs002.replace-root-with-nobody")
-        } else {
-            SecurityPluginBundle.message("dfs002.add-nobody-user")
-        }
-
-        override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
+        override fun applyFix(
+            project: Project,
+            descriptor: ProblemDescriptor,
+        ) {
             val nobodyElement = PsiElementGenerator.fromText<DockerFileUserCommand>(project, USER_NOBODY) ?: return
             if (replace) {
                 descriptor.psiElement.replace(nobodyElement)
@@ -114,3 +129,5 @@ class DockerfileUserInspection : LocalInspectionTool() {
         }
     }
 }
+
+private const val USER_NOBODY = "USER nobody"

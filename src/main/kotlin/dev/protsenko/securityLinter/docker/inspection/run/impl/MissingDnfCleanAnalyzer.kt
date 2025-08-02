@@ -9,14 +9,19 @@ import dev.protsenko.securityLinter.docker.checker.DnfCleanAllValidator
 import dev.protsenko.securityLinter.docker.inspection.run.core.DockerfileRunAnalyzer
 
 class MissingDnfCleanAnalyzer : DockerfileRunAnalyzer {
-    override fun handle(runCommand: String, psiElement: PsiElement, holder: ProblemsHolder) {
+    override fun handle(
+        runCommand: String,
+        psiElement: PsiElement,
+        holder: ProblemsHolder,
+    ) {
         if (!DnfCleanAllValidator.isValid(runCommand)) {
-            val descriptor = HtmlProblemDescriptor(
-                psiElement,
-                SecurityPluginBundle.message("dfs019.documentation"),
-                SecurityPluginBundle.message("dfs019.purge-dnf-package-cache"),
-                ProblemHighlightType.WARNING
-            )
+            val descriptor =
+                HtmlProblemDescriptor(
+                    psiElement,
+                    SecurityPluginBundle.message("dfs019.documentation"),
+                    SecurityPluginBundle.message("dfs019.purge-dnf-package-cache"),
+                    ProblemHighlightType.WARNING,
+                )
 
             holder.registerProblem(descriptor)
         }

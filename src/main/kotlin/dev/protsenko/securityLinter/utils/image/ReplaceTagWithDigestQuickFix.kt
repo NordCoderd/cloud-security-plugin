@@ -17,21 +17,28 @@ import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.utils.PsiElementGenerator
 import org.jetbrains.yaml.psi.YAMLKeyValue
 
-class ReplaceTagWithDigestQuickFix(private val imageName: String) : LocalQuickFix, HighPriorityAction {
+class ReplaceTagWithDigestQuickFix(
+    private val imageName: String,
+) : LocalQuickFix,
+    HighPriorityAction {
+    override fun getFamilyName(): @IntentionFamilyName String = SecurityPluginBundle.message("dfs001.lookup-for-digest")
 
-    override fun getFamilyName(): @IntentionFamilyName String =
-        SecurityPluginBundle.message("dfs001.lookup-for-digest")
+    override fun generatePreview(
+        project: Project,
+        previewDescriptor: ProblemDescriptor,
+    ): IntentionPreviewInfo = IntentionPreviewInfo.EMPTY
 
-    override fun generatePreview(project: Project, previewDescriptor: ProblemDescriptor): IntentionPreviewInfo = IntentionPreviewInfo.EMPTY
-
-    override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        DockerImageDigestFetcher.fetchDigest(imageName)
+    override fun applyFix(
+        project: Project,
+        descriptor: ProblemDescriptor,
+    ) {
+        DockerImageDigestFetcher
+            .fetchDigest(imageName)
             .thenAccept { digest ->
                 ApplicationManager.getApplication().runReadAction {
                     replaceImageName(project, descriptor, digest)
                 }
-            }
-            .exceptionally { throwable ->
+            }.exceptionally { throwable ->
                 ApplicationManager.getApplication().invokeLater {
                     notifyError(project, "Failed to fetch digest for image '$imageName': ${throwable.message}")
                 }
@@ -39,7 +46,11 @@ class ReplaceTagWithDigestQuickFix(private val imageName: String) : LocalQuickFi
             }
     }
 
-    private fun replaceImageName(project: Project, descriptor: ProblemDescriptor, digest: String) {
+    private fun replaceImageName(
+        project: Project,
+        descriptor: ProblemDescriptor,
+        digest: String,
+    ) {
         val targetElement = descriptor.psiElement
         if (targetElement is DockerFileFromCommand) {
             val buildStageName = retrieveBuildStageName(targetElement)
@@ -72,8 +83,12 @@ class ReplaceTagWithDigestQuickFix(private val imageName: String) : LocalQuickFi
             ?.text
     }
 
-    fun notifyError(project: Project, content: String) {
-        NotificationGroupManager.getInstance()
+    fun notifyError(
+        project: Project,
+        content: String,
+    ) {
+        NotificationGroupManager
+            .getInstance()
             .getNotificationGroup("dev.protsenko.securityLinter")
             .createNotification(content, NotificationType.ERROR)
             .notify(project)

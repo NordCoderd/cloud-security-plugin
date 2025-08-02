@@ -10,22 +10,30 @@ import dev.protsenko.securityLinter.utils.YamlPath
 import org.jetbrains.yaml.psi.*
 
 class HostPathVolumesInspection : LocalInspectionTool() {
-
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor {
         return object : BaseKubernetesVisitor() {
-            override fun analyze(specPrefix: String, document: YAMLDocument) {
-                val specVolumes = YamlPath.findByYamlPath("${specPrefix}spec.volumes", document) as? YAMLSequence ?: return
+            override fun analyze(
+                specPrefix: String,
+                document: YAMLDocument,
+            ) {
+                val specVolumes =
+                    YamlPath.findByYamlPath("${specPrefix}spec.volumes", document) as? YAMLSequence ?: return
 
                 for (volume in specVolumes.items) {
                     val volumeValue = volume.value as? YAMLMapping ?: continue
                     volumeValue.getKeyValueByKey("hostPath") ?: continue
 
-                    val descriptor = HtmlProblemDescriptor(
-                        volumeValue,
-                        SecurityPluginBundle.message("kube005.documentation"),
-                        SecurityPluginBundle.message("kube005.problem-text"),
-                        ProblemHighlightType.ERROR, emptyArray()
-                    )
+                    val descriptor =
+                        HtmlProblemDescriptor(
+                            volumeValue,
+                            SecurityPluginBundle.message("kube005.documentation"),
+                            SecurityPluginBundle.message("kube005.problem-text"),
+                            ProblemHighlightType.ERROR,
+                            emptyArray(),
+                        )
                     holder.registerProblem(descriptor)
                 }
             }

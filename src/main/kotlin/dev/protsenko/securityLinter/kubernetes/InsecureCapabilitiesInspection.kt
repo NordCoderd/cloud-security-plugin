@@ -14,28 +14,37 @@ import org.jetbrains.yaml.psi.YAMLQuotedText
 import org.jetbrains.yaml.psi.YAMLSequence
 
 class InsecureCapabilitiesInspection : LocalInspectionTool() {
-
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : BaseKubernetesVisitor() {
-            override fun analyze(specPrefix: String, document: YAMLDocument) {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor =
+        object : BaseKubernetesVisitor() {
+            override fun analyze(
+                specPrefix: String,
+                document: YAMLDocument,
+            ) {
                 val containers = containers(specPrefix, document)
                 for (container in containers) {
-                    val capabilities = (YamlPath.findByYamlPath(
-                        "securityContext.capabilities.add",
-                        container
-                    ) as? YAMLSequence) ?: continue
+                    val capabilities =
+                        (
+                            YamlPath.findByYamlPath(
+                                "securityContext.capabilities.add",
+                                container,
+                            ) as? YAMLSequence
+                        ) ?: continue
 
                     for (capability in capabilities.items) {
                         val capabilityYamlValue = capability.value as? YAMLQuotedText ?: continue
                         val capabilityValue = capabilityYamlValue.unquoted()
                         if (capabilityValue in insecureCapabilities) {
-
-                            val descriptor = HtmlProblemDescriptor(
-                                capabilityYamlValue,
-                                SecurityPluginBundle.message("kube002.documentation"),
-                                SecurityPluginBundle.message("kube002.problem-text"),
-                                ProblemHighlightType.ERROR, emptyArray()
-                            )
+                            val descriptor =
+                                HtmlProblemDescriptor(
+                                    capabilityYamlValue,
+                                    SecurityPluginBundle.message("kube002.documentation"),
+                                    SecurityPluginBundle.message("kube002.problem-text"),
+                                    ProblemHighlightType.ERROR,
+                                    emptyArray(),
+                                )
 
                             holder.registerProblem(descriptor)
                         }
@@ -43,6 +52,4 @@ class InsecureCapabilitiesInspection : LocalInspectionTool() {
                 }
             }
         }
-    }
 }
-

@@ -2,6 +2,12 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.7] 03-08-2025
+
+### Changed
+- Forcing ktlint rules in the project
+- Performed the following refactor
+
 ## [2.0.6] 21-07-2025
 
 ### Changed

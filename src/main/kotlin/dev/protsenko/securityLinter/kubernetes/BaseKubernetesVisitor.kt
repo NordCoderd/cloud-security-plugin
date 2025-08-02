@@ -27,7 +27,10 @@ abstract class BaseKubernetesVisitor : PsiElementVisitor() {
         super.visitFile(file)
     }
 
-    fun containers(specPrefix: String, document: YAMLDocument) = buildList {
+    fun containers(
+        specPrefix: String,
+        document: YAMLDocument,
+    ) = buildList {
         for (containerType in containerTypes) {
             val containers =
                 YamlPath.findByYamlPath("${specPrefix}$containerType", document) as? YAMLSequence ?: continue
@@ -35,10 +38,13 @@ abstract class BaseKubernetesVisitor : PsiElementVisitor() {
             addAll(
                 containers.items.mapNotNull { containerItem ->
                     containerItem.value as? YAMLMapping
-                }
+                },
             )
         }
     }
 
-    abstract fun analyze(specPrefix: String, document: YAMLDocument)
+    abstract fun analyze(
+        specPrefix: String,
+        document: YAMLDocument,
+    )
 }

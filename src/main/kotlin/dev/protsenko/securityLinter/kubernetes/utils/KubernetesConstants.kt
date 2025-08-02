@@ -1,7 +1,6 @@
 package dev.protsenko.securityLinter.kubernetes.utils
 
 object KubernetesConstants {
-
     val specInTemplateKindTypes = setOf("Deployment", "ReplicaSet", "DaemonSet", "StatefulSet", "Job")
     val supportedKinds = specInTemplateKindTypes + setOf("Pod", "CronJob")
 
@@ -20,19 +19,20 @@ object KubernetesConstants {
         return ""
     }
 
-    val insecureCapabilities = setOf(
-        "SETPCAP",
-        "NET_ADMIN",
-        "NET_RAW",
-        "SYS_MODULE",
-        "SYS_RAWIO",
-        "SYS_PTRACE",
-        "SYS_ADMIN",
-        "SYS_BOOT",
-        "MAC_OVERRIDE",
-        "MAC_ADMIN",
-        "PERFMON",
-        "ALL",
-        "BPF"
-    )
+    val insecureCapabilities =
+        setOf(
+            "SETPCAP",
+            "NET_ADMIN",
+            "NET_RAW",
+            "SYS_MODULE",
+            "SYS_RAWIO",
+            "SYS_PTRACE",
+            "SYS_ADMIN",
+            "SYS_BOOT",
+            "MAC_OVERRIDE",
+            "MAC_ADMIN",
+            "PERFMON",
+            "ALL",
+            "BPF",
+        )
 }

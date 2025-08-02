@@ -1,8 +1,6 @@
 package dev.protsenko.securityLinter.utils
 
-
 object PortUtils {
-
     fun parseContainerPorts(portSpec: String): List<Int> {
         // Quick check: empty or blank input
         if (portSpec.isBlank()) return emptyList()
@@ -30,13 +28,14 @@ object PortUtils {
 
         // 4) Find the last colon to isolate the container port part
         val lastColonIndex = coreSpec.lastIndexOf(':')
-        val containerPart = if (lastColonIndex == -1) {
-            // No colon => entire coreSpec is the container port
-            coreSpec
-        } else {
-            // The container port is after the last colon
-            coreSpec.substring(lastColonIndex + 1)
-        }
+        val containerPart =
+            if (lastColonIndex == -1) {
+                // No colon => entire coreSpec is the container port
+                coreSpec
+            } else {
+                // The container port is after the last colon
+                coreSpec.substring(lastColonIndex + 1)
+            }
 
         // 5) Check if containerPart is a single port or a range ("-")
         val dashIndex = containerPart.indexOf('-')
@@ -59,8 +58,4 @@ object PortUtils {
             ports
         }
     }
-
-
-
 }
-

@@ -10,19 +10,25 @@ import dev.protsenko.securityLinter.core.quickFix.DeletePsiElementQuickFix
 import dev.protsenko.securityLinter.docker.inspection.expose.core.DockerfileExposeAnalyzer
 
 class SshPortExposedAnalyzer : DockerfileExposeAnalyzer {
-    override fun handle(ports: List<Int>, psiElement: PsiElement, holder: ProblemsHolder) {
-        val prohibitedPortsIsExposed = ports.any {
-            PROHIBITED_PORTS.contains(it)
-        }
+    override fun handle(
+        ports: List<Int>,
+        psiElement: PsiElement,
+        holder: ProblemsHolder,
+    ) {
+        val prohibitedPortsIsExposed =
+            ports.any {
+                PROHIBITED_PORTS.contains(it)
+            }
 
         if (prohibitedPortsIsExposed) {
-            val descriptor = HtmlProblemDescriptor(
-                psiElement,
-                SecurityPluginBundle.message("dfs011.documentation"),
-                SecurityPluginBundle.message("dfs011.ssh-port-exposed"),
-                ProblemHighlightType.ERROR,
-                arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs011.remove-dangerous-port-exposed")))
-            )
+            val descriptor =
+                HtmlProblemDescriptor(
+                    psiElement,
+                    SecurityPluginBundle.message("dfs011.documentation"),
+                    SecurityPluginBundle.message("dfs011.ssh-port-exposed"),
+                    ProblemHighlightType.ERROR,
+                    arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs011.remove-dangerous-port-exposed"))),
+                )
 
             holder.registerProblem(descriptor)
         }

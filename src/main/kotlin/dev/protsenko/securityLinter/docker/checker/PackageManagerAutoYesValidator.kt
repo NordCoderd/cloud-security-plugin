@@ -2,7 +2,6 @@ package dev.protsenko.securityLinter.docker.checker
 
 import dev.protsenko.securityLinter.docker.checker.core.RunCommandValidator
 
-
 object PackageManagerAutoYesValidator : RunCommandValidator {
     /**
      * Regular expression to decrease count of analyzed command
@@ -20,10 +19,11 @@ object PackageManagerAutoYesValidator : RunCommandValidator {
      * - Matches '-y', '--yes', '--assume-yes', '--assumeyes', '--non-interactive'.
      * - `-[^\s]*y[^\s]*`: Matches flags like '-qy' or '-yq'.
      */
-    private val assumeYesFlagsPattern = Regex(
-        pattern = """\s(-{1,2}(yes|assume-yes|assumeyes|non-interactive)\b|-[^\s]*y[^\s]*)""",
-        options = setOf(RegexOption.IGNORE_CASE)
-    )
+    private val assumeYesFlagsPattern =
+        Regex(
+            pattern = """\s(-{1,2}(yes|assume-yes|assumeyes|non-interactive)\b|-[^\s]*y[^\s]*)""",
+            options = setOf(RegexOption.IGNORE_CASE),
+        )
 
     /**
      * Regular expression to match package manager install commands.
@@ -31,10 +31,11 @@ object PackageManagerAutoYesValidator : RunCommandValidator {
      * - Matches commands starting with 'apt-get', 'yum', 'dnf', or 'zypper'.
      * - Allows for options before 'install'.
      */
-    private val installCommandPattern = Regex(
-        pattern = """^\s*(apt-get|yum|dnf|zypper)(?:\s+\S+)*\s+install\b""",
-        options = setOf(RegexOption.IGNORE_CASE)
-    )
+    private val installCommandPattern =
+        Regex(
+            pattern = """^\s*(apt-get|yum|dnf|zypper)(?:\s+\S+)*\s+install\b""",
+            options = setOf(RegexOption.IGNORE_CASE),
+        )
 
     /**
      * Validates the RUN command to ensure that package manager install commands include '-y' or equivalent flags.
@@ -66,6 +67,3 @@ object PackageManagerAutoYesValidator : RunCommandValidator {
         return true
     }
 }
-
-
-

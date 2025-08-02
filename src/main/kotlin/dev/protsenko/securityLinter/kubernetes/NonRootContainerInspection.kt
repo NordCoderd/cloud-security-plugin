@@ -17,10 +17,15 @@ import org.jetbrains.yaml.psi.YAMLDocument
 import org.jetbrains.yaml.psi.YAMLScalar
 
 class NonRootContainerInspection : LocalInspectionTool() {
-
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : BaseKubernetesVisitor() {
-            override fun analyze(specPrefix: String, document: YAMLDocument) {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor =
+        object : BaseKubernetesVisitor() {
+            override fun analyze(
+                specPrefix: String,
+                document: YAMLDocument,
+            ) {
                 val isRunAsNonRoot = YamlPath.findByYamlPath("${specPrefix}spec.$RUN_AS_NON_ROOT", document)
                 highlightIfValueNotTrue(isRunAsNonRoot, holder)
 
@@ -48,21 +53,25 @@ class NonRootContainerInspection : LocalInspectionTool() {
                 }
             }
         }
-    }
 
-    private fun highlightIfValueNotTrue(element: PsiElement?, holder: ProblemsHolder): Boolean {
+    private fun highlightIfValueNotTrue(
+        element: PsiElement?,
+        holder: ProblemsHolder,
+    ): Boolean {
         if (element !is YAMLScalar) return false
         val isRunAsNonRoot = element.textValue.toBooleanStrictOrNull()
 
         if (isRunAsNonRoot != true) {
-            val descriptor = HtmlProblemDescriptor(
-                element,
-                SecurityPluginBundle.message("kube001.documentation"),
-                SecurityPluginBundle.message("kube001.problem-text"),
-                ProblemHighlightType.ERROR, arrayOf(
-                    ReplaceValueToTrueQuickFix(SecurityPluginBundle.message("kube001.qf.fix-run-as-non-root"))
+            val descriptor =
+                HtmlProblemDescriptor(
+                    element,
+                    SecurityPluginBundle.message("kube001.documentation"),
+                    SecurityPluginBundle.message("kube001.problem-text"),
+                    ProblemHighlightType.ERROR,
+                    arrayOf(
+                        ReplaceValueToTrueQuickFix(SecurityPluginBundle.message("kube001.qf.fix-run-as-non-root")),
+                    ),
                 )
-            )
 
             holder.registerProblem(descriptor)
             return true
@@ -71,22 +80,26 @@ class NonRootContainerInspection : LocalInspectionTool() {
     }
 
     // Running as Non-root user (v1.23+)
-    private fun highlightIfValueZero(element: PsiElement?, holder: ProblemsHolder) {
+    private fun highlightIfValueZero(
+        element: PsiElement?,
+        holder: ProblemsHolder,
+    ) {
         if (element !is YAMLScalar) return
         val isRunAsUser = element.textValue.toIntOrNull() ?: return
 
         if (isRunAsUser == 0) {
-            val descriptor = HtmlProblemDescriptor(
-                element,
-                SecurityPluginBundle.message("kube001.documentation"),
-                SecurityPluginBundle.message("kube001.problem-text"),
-                ProblemHighlightType.ERROR, arrayOf(
-                    ReplaceValueTo1000QuickFix(SecurityPluginBundle.message("kube001.qf.fix-run-as-user-or-group"))
+            val descriptor =
+                HtmlProblemDescriptor(
+                    element,
+                    SecurityPluginBundle.message("kube001.documentation"),
+                    SecurityPluginBundle.message("kube001.problem-text"),
+                    ProblemHighlightType.ERROR,
+                    arrayOf(
+                        ReplaceValueTo1000QuickFix(SecurityPluginBundle.message("kube001.qf.fix-run-as-user-or-group")),
+                    ),
                 )
-            )
 
             holder.registerProblem(descriptor)
         }
     }
-
 }

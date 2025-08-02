@@ -14,14 +14,17 @@ import dev.protsenko.securityLinter.core.HtmlProblemDescriptor
 import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.core.quickFix.DeletePsiElementQuickFix
 
-class DockerfileHealthCheckInspection: LocalInspectionTool() {
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        if (holder.file !is DockerPsiFile){
+class DockerfileHealthCheckInspection : LocalInspectionTool() {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor {
+        if (holder.file !is DockerPsiFile) {
             return EMPTY_VISITOR
         }
-        return object : DockerFileVisitor(){
+        return object : DockerFileVisitor() {
             override fun visitFile(file: PsiFile) {
-                if (file !is DockerPsiFile){
+                if (file !is DockerPsiFile) {
                     return
                 }
                 val fromCommands = file.findChildrenByClass(DockerFileFromCommand::class.java)
@@ -30,18 +33,20 @@ class DockerfileHealthCheckInspection: LocalInspectionTool() {
 
                 val healthChecks = file.findChildrenByClass(DockerFileHealthCheckCommand::class.java)
 
-                val lastInstructions = healthChecks.filter {
-                    it.textOffset > lastStage
-                }
-                if (lastInstructions.size > 1){
+                val lastInstructions =
+                    healthChecks.filter {
+                        it.textOffset > lastStage
+                    }
+                if (lastInstructions.size > 1) {
                     for (instruction in lastInstructions.dropLast(1)) {
-                        val descriptor = HtmlProblemDescriptor(
-                            instruction,
-                            SecurityPluginBundle.message("dfs012.documentation"),
-                            SecurityPluginBundle.message("dfs012.only-one-healthcheck"),
-                            ProblemHighlightType.ERROR,
-                            arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs012.remove-redundant-healthcheck")))
-                        )
+                        val descriptor =
+                            HtmlProblemDescriptor(
+                                instruction,
+                                SecurityPluginBundle.message("dfs012.documentation"),
+                                SecurityPluginBundle.message("dfs012.only-one-healthcheck"),
+                                ProblemHighlightType.ERROR,
+                                arrayOf(DeletePsiElementQuickFix(SecurityPluginBundle.message("dfs012.remove-redundant-healthcheck"))),
+                            )
 
                         holder.registerProblem(descriptor)
                     }

@@ -9,14 +9,19 @@ import dev.protsenko.securityLinter.docker.checker.YumInstallWithoutCleanValidat
 import dev.protsenko.securityLinter.docker.inspection.run.core.DockerfileRunAnalyzer
 
 class YumInstallWithoutCleanAnalyzer : DockerfileRunAnalyzer {
-    override fun handle(runCommand: String, psiElement: PsiElement, holder: ProblemsHolder) {
+    override fun handle(
+        runCommand: String,
+        psiElement: PsiElement,
+        holder: ProblemsHolder,
+    ) {
         if (!YumInstallWithoutCleanValidator.isValid(runCommand)) {
-            val descriptor = HtmlProblemDescriptor(
-                psiElement,
-                SecurityPluginBundle.message("dfs024.documentation"),
-                SecurityPluginBundle.message("dfs024.purge-yum-package-cache"),
-                ProblemHighlightType.WARNING
-            )
+            val descriptor =
+                HtmlProblemDescriptor(
+                    psiElement,
+                    SecurityPluginBundle.message("dfs024.documentation"),
+                    SecurityPluginBundle.message("dfs024.purge-yum-package-cache"),
+                    ProblemHighlightType.WARNING,
+                )
 
             holder.registerProblem(descriptor)
         }

@@ -6,14 +6,19 @@ import org.jetbrains.yaml.psi.YAMLMapping
 import org.jetbrains.yaml.psi.YAMLSequence
 
 object YamlPath {
-
-    fun findByYamlPath(path: String, document: YAMLDocument): PsiElement? {
+    fun findByYamlPath(
+        path: String,
+        document: YAMLDocument,
+    ): PsiElement? {
         val matchedElement: YAMLMapping = document.children[0] as? YAMLMapping ?: return null
 
         return findByYamlPath(path, matchedElement)
     }
 
-    fun findByYamlPath(path: String, matchedElement: YAMLMapping): PsiElement? {
+    fun findByYamlPath(
+        path: String,
+        matchedElement: YAMLMapping,
+    ): PsiElement? {
         val searchTokens = path.split(".")
         var startElement: PsiElement? = matchedElement
 

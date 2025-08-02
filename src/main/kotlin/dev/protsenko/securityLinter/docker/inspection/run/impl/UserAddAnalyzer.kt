@@ -8,16 +8,21 @@ import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.docker.checker.UserAddValidator
 import dev.protsenko.securityLinter.docker.inspection.run.core.DockerfileRunAnalyzer
 
-class UserAddAnalyzer:DockerfileRunAnalyzer {
-    override fun handle(runCommand: String, psiElement: PsiElement, holder: ProblemsHolder) {
-        if (!UserAddValidator.isValid(runCommand)){
-            val descriptor = HtmlProblemDescriptor(
-                psiElement,
-                SecurityPluginBundle.message("dfs029.documentation"),
-                SecurityPluginBundle.message("dfs029.useradd-missing-l-flag-high-uid"),
-                ProblemHighlightType.WARNING,
-                emptyArray()
-            )
+class UserAddAnalyzer : DockerfileRunAnalyzer {
+    override fun handle(
+        runCommand: String,
+        psiElement: PsiElement,
+        holder: ProblemsHolder,
+    ) {
+        if (!UserAddValidator.isValid(runCommand)) {
+            val descriptor =
+                HtmlProblemDescriptor(
+                    psiElement,
+                    SecurityPluginBundle.message("dfs029.documentation"),
+                    SecurityPluginBundle.message("dfs029.useradd-missing-l-flag-high-uid"),
+                    ProblemHighlightType.WARNING,
+                    emptyArray(),
+                )
 
             holder.registerProblem(descriptor)
         }

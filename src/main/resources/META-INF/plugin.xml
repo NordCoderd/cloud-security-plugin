@@ -20,13 +20,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <localInspection
-                implementationClass="dev.protsenko.securityLinter.docker.inspection.cmd_and_entrypoint.DockerfileCmdAndEntrypointInspection"
+                implementationClass="dev.protsenko.securityLinter.docker.inspection.cmdAndEntrypoint.DockerfileCmdAndEntrypointInspection"
                 displayName="CMD and ENTRYPOINT best practices"
                 groupPathKey="common.group-key" groupKey="common.docker-group-key" language="Dockerfile"
                 enabledByDefault="true"/>
 
         <localInspection
-                implementationClass="dev.protsenko.securityLinter.docker.inspection.copy_and_add.DockerfileCopyAndAddInspection"
+                implementationClass="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.DockerfileCopyAndAddInspection"
                 displayName="COPY and ADD best practices"
                 groupPathKey="common.group-key" groupKey="common.docker-group-key" language="Dockerfile"
                 enabledByDefault="true"/>
@@ -100,9 +100,9 @@
         <dockerFileExposeAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.expose.impl.SshPortExposedAnalyzer"/>
         <dockerFileExposeAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.expose.impl.ExposedPortOutOfRangeAnalyzer"/>
 
-        <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copy_and_add.impl.CopyReferringToCurrentImageAnalyzer"/>
-        <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copy_and_add.impl.UseSlashForCopyArgsAnalyzer"/>
-        <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copy_and_add.impl.DockerfileAddInspection"/>
+        <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.impl.CopyReferringToCurrentImageAnalyzer"/>
+        <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.impl.UseSlashForCopyArgsAnalyzer"/>
+        <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.impl.DockerfileAddInspection"/>
     </extensions>
 
     <extensionPoints>
@@ -111,7 +111,7 @@
         <extensionPoint name="dockerFileExposeAnalyzer" dynamic="true"
                         interface="dev.protsenko.securityLinter.docker.inspection.expose.core.DockerfileExposeAnalyzer"/>
         <extensionPoint name="dockerFileCopyOrAddAnalyzer" dynamic="true"
-                        interface="dev.protsenko.securityLinter.docker.inspection.copy_and_add.core.DockerfileCopyOrAddAnalyzer"/>
+                        interface="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.core.DockerfileCopyOrAddAnalyzer"/>
     </extensionPoints>
 
 </idea-plugin>

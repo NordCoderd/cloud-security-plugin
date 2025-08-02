@@ -11,23 +11,23 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <localInspection
-                implementationClass="dev.protsenko.securityLinter.docker_compose.DockerComposeInspection"
-                displayName="Docker Compose Best Practices"
+                implementationClass="dev.protsenko.securityLinter.dockerCompose.DockerComposeInspection"
+                displayName="Docker-compose best practices"
                 groupPathKey="common.group-key" groupKey="common.docker-compose-group-key"
                 enabledByDefault="true" language="yaml"/>
         <localInspection
                 implementationClass="dev.protsenko.securityLinter.kubernetes.NonRootContainerInspection"
-                displayName="Non Root Containers"
+                displayName="Non root containers"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
         <localInspection
                 implementationClass="dev.protsenko.securityLinter.kubernetes.InsecureCapabilitiesInspection"
-                displayName="Insecure Capabilities"
+                displayName="Insecure capabilities"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
         <localInspection
                 implementationClass="dev.protsenko.securityLinter.kubernetes.HostNetworkPidIpcInspection"
-                displayName="Sharing Host Namespaces"
+                displayName="Sharing host namespaces"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
         <localInspection
@@ -37,7 +37,7 @@
                 enabledByDefault="true" language="yaml"/>
         <localInspection
                 implementationClass="dev.protsenko.securityLinter.kubernetes.HostPathVolumesInspection"
-                displayName="HostPath Volumes"
+                displayName="HostPath volumes"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
         <localInspection
@@ -57,7 +57,7 @@
                 enabledByDefault="true" language="yaml"/>
         <localInspection
                 implementationClass="dev.protsenko.securityLinter.kubernetes.InsecureProcMount"
-                displayName="Non-Default /proc mount"
+                displayName="Non-default /proc mount"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
         <localInspection

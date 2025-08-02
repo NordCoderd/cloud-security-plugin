@@ -20,15 +20,18 @@ class DockerfileRunInspection : LocalInspectionTool() {
     val extensionPointName =
         ExtensionPointName.create<DockerfileRunAnalyzer>("dev.protsenko.security-linter.dockerFileRunAnalyzer")
 
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        if (holder.file !is DockerPsiFile){
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor {
+        if (holder.file !is DockerPsiFile) {
             return EMPTY_VISITOR
         }
         val extensions = extensionPointName.extensions
 
         return object : DockerFileVisitor() {
             override fun visitFile(file: PsiFile) {
-                if (file !is DockerPsiFile){
+                if (file !is DockerPsiFile) {
                     return
                 }
 
@@ -52,25 +55,27 @@ class DockerfileRunInspection : LocalInspectionTool() {
                 val runCommandsToHighlight = collectRunChains(dockerCommands)
                 if (runCommandsToHighlight.isNotEmpty()) {
                     runCommandsToHighlight.forEach { runCommand ->
-                        val descriptor = HtmlProblemDescriptor(
-                            runCommand,
-                            SecurityPluginBundle.message("dfs028.documentation"),
-                            SecurityPluginBundle.message("dfs028.multiple-consecutive-run-commands"),
-                            ProblemHighlightType.WARNING
-                        )
+                        val descriptor =
+                            HtmlProblemDescriptor(
+                                runCommand,
+                                SecurityPluginBundle.message("dfs028.documentation"),
+                                SecurityPluginBundle.message("dfs028.multiple-consecutive-run-commands"),
+                                ProblemHighlightType.WARNING,
+                            )
 
                         holder.registerProblem(descriptor)
                     }
                 }
 
-                if (curlCommands.isNotEmpty() && wgetCommands.isNotEmpty()){
+                if (curlCommands.isNotEmpty() && wgetCommands.isNotEmpty()) {
                     (curlCommands + wgetCommands).forEach { runCommand ->
-                        val descriptor = HtmlProblemDescriptor(
-                            runCommand,
-                            SecurityPluginBundle.message("dfs026.documentation"),
-                            SecurityPluginBundle.message("dfs026.standardise-remote-get"),
-                            ProblemHighlightType.WARNING
-                        )
+                        val descriptor =
+                            HtmlProblemDescriptor(
+                                runCommand,
+                                SecurityPluginBundle.message("dfs026.documentation"),
+                                SecurityPluginBundle.message("dfs026.standardise-remote-get"),
+                                ProblemHighlightType.WARNING,
+                            )
 
                         holder.registerProblem(descriptor)
                     }
@@ -79,10 +84,8 @@ class DockerfileRunInspection : LocalInspectionTool() {
         }
     }
 
-    private fun collectRunChains(
-        dockerCommands: Array<DockerPsiCommand>
-    ): List<DockerFileRunCommand> {
-        val result  = mutableListOf<DockerFileRunCommand>()
+    private fun collectRunChains(dockerCommands: Array<DockerPsiCommand>): List<DockerFileRunCommand> {
+        val result = mutableListOf<DockerFileRunCommand>()
         val current = mutableListOf<DockerFileRunCommand>()
 
         for (cmd in dockerCommands) {
@@ -96,5 +99,4 @@ class DockerfileRunInspection : LocalInspectionTool() {
         if (current.size > 1) result += current
         return result
     }
-
 }

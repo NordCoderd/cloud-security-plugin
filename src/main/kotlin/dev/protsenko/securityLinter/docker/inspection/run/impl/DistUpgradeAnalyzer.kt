@@ -8,15 +8,20 @@ import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.docker.checker.DistUpgradeValidator
 import dev.protsenko.securityLinter.docker.inspection.run.core.DockerfileRunAnalyzer
 
-class DistUpgradeAnalyzer: DockerfileRunAnalyzer {
-    override fun handle(runCommand: String, psiElement: PsiElement, holder: ProblemsHolder) {
-        if (!DistUpgradeValidator.isValid(runCommand)){
-            val descriptor = HtmlProblemDescriptor(
-                psiElement,
-                SecurityPluginBundle.message("dfs018.documentation"),
-                SecurityPluginBundle.message("dfs018.no-dist-upgrade"),
-                ProblemHighlightType.WARNING
-            )
+class DistUpgradeAnalyzer : DockerfileRunAnalyzer {
+    override fun handle(
+        runCommand: String,
+        psiElement: PsiElement,
+        holder: ProblemsHolder,
+    ) {
+        if (!DistUpgradeValidator.isValid(runCommand)) {
+            val descriptor =
+                HtmlProblemDescriptor(
+                    psiElement,
+                    SecurityPluginBundle.message("dfs018.documentation"),
+                    SecurityPluginBundle.message("dfs018.no-dist-upgrade"),
+                    ProblemHighlightType.WARNING,
+                )
 
             holder.registerProblem(descriptor)
         }

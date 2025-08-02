@@ -12,10 +12,15 @@ import org.jetbrains.yaml.psi.YAMLDocument
 import org.jetbrains.yaml.psi.YAMLScalar
 
 class HostNetworkPidIpcInspection : LocalInspectionTool() {
-
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : BaseKubernetesVisitor() {
-            override fun analyze(specPrefix: String, document: YAMLDocument) {
+    override fun buildVisitor(
+        holder: ProblemsHolder,
+        isOnTheFly: Boolean,
+    ): PsiElementVisitor =
+        object : BaseKubernetesVisitor() {
+            override fun analyze(
+                specPrefix: String,
+                document: YAMLDocument,
+            ) {
                 for (keyToVerify in specKeysToVerify) {
                     val key = YamlPath.findByYamlPath("${specPrefix}spec.$keyToVerify", document) ?: continue
 
@@ -23,23 +28,24 @@ class HostNetworkPidIpcInspection : LocalInspectionTool() {
                     val booleanValue = key.textValue.toBooleanStrictOrNull()
 
                     if (booleanValue != false) {
-                        val descriptor = HtmlProblemDescriptor(
-                            key,
-                            SecurityPluginBundle.message("kube003.documentation"),
-                            SecurityPluginBundle.message("kube003.problem-text"),
-                            ProblemHighlightType.ERROR, arrayOf(
-                                ReplaceValueToFalseQuickFix(
-                                    SecurityPluginBundle.message("kube003.qf.fix-value", keyToVerify)
-                                )
+                        val descriptor =
+                            HtmlProblemDescriptor(
+                                key,
+                                SecurityPluginBundle.message("kube003.documentation"),
+                                SecurityPluginBundle.message("kube003.problem-text"),
+                                ProblemHighlightType.ERROR,
+                                arrayOf(
+                                    ReplaceValueToFalseQuickFix(
+                                        SecurityPluginBundle.message("kube003.qf.fix-value", keyToVerify),
+                                    ),
+                                ),
                             )
-                        )
                         holder.registerProblem(descriptor)
                     }
                     continue
                 }
             }
         }
-    }
 }
 
 private val specKeysToVerify = listOf("hostNetwork", "hostPID", "hostIPC")

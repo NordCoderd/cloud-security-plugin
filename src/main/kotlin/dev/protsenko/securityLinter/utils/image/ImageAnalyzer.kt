@@ -12,26 +12,30 @@ object ImageAnalyzer {
         imageDefinition: ImageDefinition,
         holder: ProblemsHolder,
         element: PsiElement,
-        aliasToImageDefinition: Map<String, ImageDefinition>
+        aliasToImageDefinition: Map<String, ImageDefinition>,
     ) {
         val effectiveImageDefinition = aliasToImageDefinition[imageDefinition.imageName] ?: imageDefinition
 
         if (effectiveImageDefinition.version == null) {
-            val descriptor = HtmlProblemDescriptor(
-                element,
-                SecurityPluginBundle.message("dfs001.documentation"),
-                SecurityPluginBundle.message("dfs001.missing-version-tag"),
-                ProblemHighlightType.ERROR, arrayOf(ReplaceTagWithDigestQuickFix(effectiveImageDefinition.imageName))
-            )
+            val descriptor =
+                HtmlProblemDescriptor(
+                    element,
+                    SecurityPluginBundle.message("dfs001.documentation"),
+                    SecurityPluginBundle.message("dfs001.missing-version-tag"),
+                    ProblemHighlightType.ERROR,
+                    arrayOf(ReplaceTagWithDigestQuickFix(effectiveImageDefinition.imageName)),
+                )
 
             holder.registerProblem(descriptor)
         } else if (effectiveImageDefinition.version == DockerRepoTag.DEFAULT_TAG) {
-            val descriptor = HtmlProblemDescriptor(
-                element,
-                SecurityPluginBundle.message("dfs001.documentation"),
-                SecurityPluginBundle.message("dfs001.latest-tag"),
-                ProblemHighlightType.ERROR, arrayOf(ReplaceTagWithDigestQuickFix(effectiveImageDefinition.imageName))
-            )
+            val descriptor =
+                HtmlProblemDescriptor(
+                    element,
+                    SecurityPluginBundle.message("dfs001.documentation"),
+                    SecurityPluginBundle.message("dfs001.latest-tag"),
+                    ProblemHighlightType.ERROR,
+                    arrayOf(ReplaceTagWithDigestQuickFix(effectiveImageDefinition.imageName)),
+                )
 
             holder.registerProblem(descriptor)
         }

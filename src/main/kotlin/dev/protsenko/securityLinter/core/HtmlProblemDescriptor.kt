@@ -6,13 +6,13 @@ import com.intellij.codeInspection.ex.ProblemDescriptorImpl
 import com.intellij.openapi.util.NlsContexts
 import com.intellij.psi.PsiElement
 
-class HtmlProblemDescriptor(element: PsiElement,
-                            private val urlCode: String,
-                            descriptionTemplate: String,
-                            highlightType: ProblemHighlightType,
-                            fixes: Array<LocalQuickFix> = emptyArray()
-) :
-    ProblemDescriptorImpl(
+class HtmlProblemDescriptor(
+    element: PsiElement,
+    private val urlCode: String,
+    descriptionTemplate: String,
+    highlightType: ProblemHighlightType,
+    fixes: Array<LocalQuickFix> = emptyArray(),
+) : ProblemDescriptorImpl(
         element,
         element,
         descriptionTemplate,
@@ -22,11 +22,12 @@ class HtmlProblemDescriptor(element: PsiElement,
         null,
         true,
         null,
-        true
+        true,
     ) {
-    override fun getTooltipTemplate(): @NlsContexts.Tooltip String {
-        return SecurityPluginBundle.message(
-            "inspection-message-template", urlCode, descriptionTemplate
+    override fun getTooltipTemplate(): @NlsContexts.Tooltip String =
+        SecurityPluginBundle.message(
+            "inspection-message-template",
+            urlCode,
+            descriptionTemplate,
         )
-    }
 }

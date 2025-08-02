@@ -11,7 +11,6 @@ import java.time.Duration
 import java.util.concurrent.CompletableFuture
 
 object DockerImageDigestFetcher {
-
     private val om = ObjectMapper()
     private val httpClient: HttpClient
 
@@ -23,33 +22,38 @@ object DockerImageDigestFetcher {
             val proxyHost = httpConfigurable.PROXY_HOST
             val proxyPort = httpConfigurable.PROXY_PORT
             val proxyAddress = InetSocketAddress(proxyHost, proxyPort)
-            val proxyType = if (httpConfigurable.PROXY_TYPE_IS_SOCKS) {
-                Proxy.Type.SOCKS
-            } else {
-                Proxy.Type.HTTP
-            }
+            val proxyType =
+                if (httpConfigurable.PROXY_TYPE_IS_SOCKS) {
+                    Proxy.Type.SOCKS
+                } else {
+                    Proxy.Type.HTTP
+                }
             val proxy = Proxy(proxyType, proxyAddress)
-            val proxySelector = object : ProxySelector() {
-                override fun select(uri: URI?): List<Proxy> {
-                    return listOf(proxy)
-                }
+            val proxySelector =
+                object : ProxySelector() {
+                    override fun select(uri: URI?): List<Proxy> = listOf(proxy)
 
-                override fun connectFailed(uri: URI?, sa: SocketAddress?, ioe: IOException?) {
-                    return
+                    override fun connectFailed(
+                        uri: URI?,
+                        sa: SocketAddress?,
+                        ioe: IOException?,
+                    ) {
+                        return
+                    }
                 }
-            }
 
             builder.proxy(proxySelector)
 
             if (httpConfigurable.PROXY_AUTHENTICATION) {
                 val username = httpConfigurable.proxyLogin
                 val password = httpConfigurable.plainProxyPassword
-                if (username != null && password != null){
-                    builder.authenticator(object : Authenticator() {
-                        override fun getPasswordAuthentication(): PasswordAuthentication {
-                            return PasswordAuthentication(username, password.toCharArray())
-                        }
-                    })
+                if (username != null && password != null) {
+                    builder.authenticator(
+                        object : Authenticator() {
+                            override fun getPasswordAuthentication(): PasswordAuthentication =
+                                PasswordAuthentication(username, password.toCharArray())
+                        },
+                    )
                 }
             }
         }
@@ -57,21 +61,25 @@ object DockerImageDigestFetcher {
     }
 
     fun fetchDigest(imageName: String): CompletableFuture<String> {
-        val imagePath = if (imageName.contains("/")) {
-            imageName
-        } else {
-            "library/${imageName}"
-        }
+        val imagePath =
+            if (imageName.contains("/")) {
+                imageName
+            } else {
+                "library/$imageName"
+            }
 
         val apiUrl =
             "https://hub.docker.com/v2/repositories/$imagePath/tags?page_size=1&name=latest"
 
-        val request = HttpRequest.newBuilder()
-            .uri(URI.create(apiUrl))
-            .header("Accept", "application/json")
-            .build()
+        val request =
+            HttpRequest
+                .newBuilder()
+                .uri(URI.create(apiUrl))
+                .header("Accept", "application/json")
+                .build()
 
-        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+        return httpClient
+            .sendAsync(request, HttpResponse.BodyHandlers.ofString())
             .thenApply { response ->
                 if (response.statusCode() == 200) {
                     val digest = parseDigest(response.body())
