@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risky-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: risky
+  template:
+    metadata:
+      labels:
+        app: risky
+    spec:
+      containers:
+        - name: app
+          image: alpine
+          command: ["sh", "-c", "sleep 3600"]
+          volumeMounts:
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+            - name: host-etc
+              mountPath: /host/etc
+              readOnly: true
+      volumes:
+        - name: docker-sock
+          <error descr="This volume type may expose the node or bypass pod isolation. Use Kubernetes data volumes (ConfigMap/Secret/DownwardAPI/Projected) or storage via PVC/CSI instead.">hostPath:
+            path: /var/run/docker.sock   # Direct access to runtime socket
+            type: Socket</error>
+        - name: host-etc
+          <error descr="This volume type may expose the node or bypass pod isolation. Use Kubernetes data volumes (ConfigMap/Secret/DownwardAPI/Projected) or storage via PVC/CSI instead.">hostPath:
+            path: /etc                   # Arbitrary host filesystem access
+            type: Directory</error>

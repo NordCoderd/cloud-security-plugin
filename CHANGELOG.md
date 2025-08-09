@@ -2,6 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.8] 09-08-2025
+
+### Added
+- Kubernetes Security Standards: [Disallowed volume type](https://protsenko.dev/infrastructure-security/disallowed-volume-type/)
+ 
 ## [2.0.7] 03-08-2025
 
 ### Changed

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safe-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safe
+  template:
+    metadata:
+      labels:
+        app: safe
+    spec:
+      containers:
+        - name: app
+          image: alpine
+          command: ["sh", "-c", "sleep 3600"]
+          volumeMounts:
+            - name: app-config
+              mountPath: /etc/app/config
+              readOnly: true
+            - name: db-creds
+              mountPath: /var/run/secrets/db
+              readOnly: true
+            - name: cache
+              mountPath: /var/cache/app
+            - name: data
+              mountPath: /var/lib/app
+      volumes:
+        - name: app-config
+          configMap:
+            name: app-config
+        - name: db-creds
+          secret:
+            secretName: db-creds
+        - name: cache
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: data
+          persistentVolumeClaim:
+            claimName: app-data # Backed by an approved StorageClass/CSI driver

@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hostlog-audit
+  labels:
+    app: hostlog-audit
+spec:
+  schedule: "*/5 * * * *"          # every 5 minutes
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: hostlog-audit
+        spec:
+          restartPolicy: OnFailure
+          volumes:
+          - name: host-logs
+            <error descr="This volume type may expose the node or bypass pod isolation. Use Kubernetes data volumes (ConfigMap/Secret/DownwardAPI/Projected) or storage via PVC/CSI instead.">hostPath:
+              path: /var/log
+              type: Directory</error>
+          containers:
+          - name: log-dumper
+            image: busybox:1.36.1
+            command: ["/bin/sh", "-c"]
+            args:
+              - tail -n 20 /host/var/log/dmesg
+            securityContext:
+              allowPrivilegeEscalation: false
+              privileged: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+            volumeMounts:
+            - name: host-logs
+              mountPath: /host/var/log
+              readOnly: true

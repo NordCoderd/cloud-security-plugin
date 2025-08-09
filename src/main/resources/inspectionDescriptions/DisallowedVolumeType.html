@@ -1,0 +1,8 @@
+<html>
+<body>
+<p>Detects disallowed volume types in Pods (violates Pod Security Restricted).</p>
+<p>Certain volume types (e.g., <code>hostPath</code> and legacy in-tree plugins) can expose the node filesystem or bypass pod isolation, leading to privilege escalation and node compromise.</p>
+<p><b>Allowed under Restricted:</b> <code>configMap</code>, <code>csi</code>, <code>downwardAPI</code>, <code>emptyDir</code>, <code>ephemeral</code>, <code>persistentVolumeClaim</code>, <code>projected</code>, <code>secret</code>.</p>
+<p><b>How to fix:</b> Replace with Kubernetes data volumes (ConfigMap/Secret/DownwardAPI/Projected) or storage via PVC/CSI. Prefer read-only mounts where possible and avoid mounting host paths or runtime sockets.</p>
+</body>
+</html>

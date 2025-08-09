@@ -70,5 +70,10 @@
                 displayName="Insecure systctls"
                 groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
                 enabledByDefault="true" language="yaml"/>
+        <localInspection
+                implementationClass="dev.protsenko.securityLinter.kubernetes.DisallowedVolumeType"
+                displayName="Disallowed volume types"
+                groupPathKey="common.group-key" groupKey="common.kubernetes-group-key"
+                enabledByDefault="true" language="yaml"/>
     </extensions>
 </idea-plugin>
