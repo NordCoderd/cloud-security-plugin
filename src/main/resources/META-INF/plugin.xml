@@ -14,7 +14,7 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>Docker</depends>
-    <depends optional="true" config-file="dev.protsenko.security-linter-yaml.xml">org.jetbrains.plugins.yaml</depends>
+    <depends config-file="dev.protsenko.security-linter-yaml.xml">org.jetbrains.plugins.yaml</depends>
 
     <resource-bundle>messages.SecurityPluginBundle</resource-bundle>
 
