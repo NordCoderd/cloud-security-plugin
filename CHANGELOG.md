@@ -2,6 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.10] 23-08-2025
+
+### Changed
+- Updated description of the plugin.
+
 ## [2.0.9] 16-08-2025
 
 Read more about [Kubernetes Security Best Practices](https://protsenko.dev/kubernetes-security-top-12-best-practices-to-protect-your-cluster/)

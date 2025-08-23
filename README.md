@@ -9,9 +9,14 @@
   <img alt="Logo" align="right" src="https://raw.githubusercontent.com/NordCoderd/cloud-security-plugin/refs/heads/master/src/main/resources/META-INF/pluginIcon.svg" width="125">
 </picture>
 
-Cloud (IaC) Security Linter for JetBrains IDEs (e.g., IntelliJ IDEA, PyCharm, WebStorm, and more).
+Docker and Kubernetes Security Scanner for JetBrains IDEs (e.g., IntelliJ IDEA, PyCharm, WebStorm, and more).
 
-Scan Docker (dockerfile and compose), Kubernetes files for security vulnerabilities and misconfigurations directly within your JetBrains IDE.
+## What is inside?
+
+The plugin provides two main features:
+
+- Docker Security Scanner: it covers Trivy and Hadolint rules and also provides rules to match Docker Best Practices.
+- Kubernetes Security Scanner: it covers pod security standards.
 
 ## Why this plugin?
 
@@ -23,9 +28,9 @@ Scan Docker (dockerfile and compose), Kubernetes files for security vulnerabilit
 
 ## What does the plugin offer?
 
-- **Dockerfile Analysis**: Detect security vulnerabilities and optimize Docker images with over 40 checks.
-- **Docker Compose**: Detect security vulnerabilities and misconfigurations.
-- **Kubernetes**: Detect security issues to align with the Pod Security Standards.
+- **Dockerfile Analysis**: Scanner for security vulnerabilities and Docker image optimization with over 40 checks.
+- **Docker Compose**: Scanner for security vulnerabilities and misconfigurations.
+- **Kubernetes**: Scanner for security issues to align with the Pod Security Standards.
 - **Quick Fixes**: Resolve issues faster using built-in quick fixes.
 
 ## What problems can the plugin detect?
