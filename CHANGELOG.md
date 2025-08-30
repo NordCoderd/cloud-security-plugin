@@ -2,6 +2,13 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.11] 30-08-2025
+
+### Added
+- Docker Inspection: [Use apk add with --no-cache](https://protsenko.dev/infrastructure-security/simplify-your-apk-cache-clean-strategy/)
+
+Read more about every implemented [Docker Best Practices](https://protsenko.dev/docker-best-practices-to-secure-and-optimize-your-containers/) in the plugin.
+
 ## [2.0.10] 23-08-2025
 
 ### Changed

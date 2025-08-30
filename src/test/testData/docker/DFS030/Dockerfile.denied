@@ -1,0 +1,3 @@
+FROM alpine:3.13
+<warning descr="Alpine package installation without --no-cache, consider using it to reduce image size."><warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN apk add git</warning></warning>
+<warning descr="Alpine package installation without --no-cache, consider using it to reduce image size."><warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN apk add git && rm -rf /var/cache/apk/*</warning></warning>

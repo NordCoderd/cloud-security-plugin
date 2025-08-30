@@ -96,6 +96,7 @@
         <dockerFileRunAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.run.impl.ZypperInstallWithoutCleanAnalyzer"/>
         <dockerFileRunAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.run.impl.AptIsUsedAnalyzer"/>
         <dockerFileRunAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.run.impl.UserAddAnalyzer"/>
+        <dockerFileRunAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.run.impl.ApkNoCacheValidatorAnalyzer"/>
 
         <dockerFileExposeAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.expose.impl.SshPortExposedAnalyzer"/>
         <dockerFileExposeAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.expose.impl.ExposedPortOutOfRangeAnalyzer"/>
