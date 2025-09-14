@@ -2,6 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.12] 14-09-2025
+
+### Added
+- Docker Inspection: [Using pip installation without --no-cache-dir](https://protsenko.dev/infrastructure-security/using-pip-install-without-no-cache-dir/)
+
 ## [2.0.11] 30-08-2025
 
 ### Added

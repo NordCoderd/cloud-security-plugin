@@ -1,4 +1,4 @@
 FROM alpine:3.13
-RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --upgrade pip
 USER mike
-RUN pip install --upgrade pip
+RUN pip install --no-cache-dir --upgrade pip

@@ -5,6 +5,7 @@ interface RunCommandValidator {
      * Every command must start with RUN and contain a shell script (Linux commands).
      * Before implementing, please follow these guidelines:
      * - The name of the implemented object should end with "Validator".
+     * - The validator is singleton and should use Kotlin object (not class).
      * - Your validator logic should not create additional objects (e.g., lists).
      * - Your validator must handle new lines and special symbols (e.g., &&).
      * - Use only one regular expression to check the command.

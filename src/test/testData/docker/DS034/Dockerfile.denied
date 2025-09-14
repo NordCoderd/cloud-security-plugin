@@ -1,4 +1,4 @@
 FROM alpine:3.13
-<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN pip install --upgrade pip</warning>
-<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN pip install --upgrade pip</warning>
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN pip install --no-cache-dir --upgrade pip</warning>
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN pip install --no-cache-dir --upgrade pip</warning>
 USER mike

@@ -1,0 +1,2 @@
+FROM alpine:3.13
+<warning descr="The pip package installations without --no-cache-dir, consider using it to reduce image size.">RUN pip install package</warning>
