@@ -2,6 +2,12 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.13] 21-09-2025
+
+Small cosmetic changes
+
+Read my latest blog: [IntelliJ IDEA Plugin Development: What Have I Learned](https://protsenko.dev/intellij-idea-plugin-development-what-have-i-learned/)
+
 ## [2.0.12] 14-09-2025
 
 ### Added

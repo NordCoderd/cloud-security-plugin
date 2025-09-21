@@ -10,7 +10,8 @@ import dev.protsenko.securityLinter.kubernetes.quickfix.ReplaceValueToFalseQuick
 import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.ALLOW_PRIVILEGE_ESCALATION
 import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.PRIVILEGED
 import dev.protsenko.securityLinter.utils.YamlPath
-import org.jetbrains.yaml.psi.*
+import org.jetbrains.yaml.psi.YAMLDocument
+import org.jetbrains.yaml.psi.YAMLScalar
 
 class PrivilegedContainersInspection : LocalInspectionTool() {
     override fun buildVisitor(

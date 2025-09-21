@@ -7,7 +7,10 @@ import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.evaluat
 import dev.protsenko.securityLinter.kubernetes.utils.KubernetesConstants.supportedKinds
 import dev.protsenko.securityLinter.utils.YamlPath
 import org.jetbrains.yaml.YAMLUtil
-import org.jetbrains.yaml.psi.*
+import org.jetbrains.yaml.psi.YAMLDocument
+import org.jetbrains.yaml.psi.YAMLFile
+import org.jetbrains.yaml.psi.YAMLMapping
+import org.jetbrains.yaml.psi.YAMLSequence
 
 abstract class BaseKubernetesVisitor : PsiElementVisitor() {
     override fun visitFile(file: PsiFile) {

@@ -7,7 +7,9 @@ import com.intellij.psi.PsiElementVisitor
 import dev.protsenko.securityLinter.core.HtmlProblemDescriptor
 import dev.protsenko.securityLinter.core.SecurityPluginBundle
 import dev.protsenko.securityLinter.utils.YamlPath
-import org.jetbrains.yaml.psi.*
+import org.jetbrains.yaml.psi.YAMLDocument
+import org.jetbrains.yaml.psi.YAMLMapping
+import org.jetbrains.yaml.psi.YAMLSequence
 
 class HostPathVolumesInspection : LocalInspectionTool() {
     override fun buildVisitor(
