@@ -2,6 +2,14 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.14] 13-10-2025
+
+### Changed
+
+- Docker Compose inspections were rewritten to better YAML analyze approach
+
+Please support plugin by starring [GitHub repository](https://github.com/NordCoderd/cloud-security-plugin)
+
 ## [2.0.13] 21-09-2025
 
 Small cosmetic changes

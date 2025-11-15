@@ -3,7 +3,6 @@ package dev.protsenko.securityLinter.dockerCompose
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiFile
 import dev.protsenko.securityLinter.core.DockerFileConstants.PROHIBITED_PORTS
@@ -16,16 +15,15 @@ import dev.protsenko.securityLinter.dockerCompose.DockerComposeConstants.PRIVILE
 import dev.protsenko.securityLinter.dockerCompose.DockerComposeConstants.USER_KEY_LITERAL
 import dev.protsenko.securityLinter.dockerCompose.DockerComposeConstants.supportedAttributes
 import dev.protsenko.securityLinter.utils.PortUtils
+import dev.protsenko.securityLinter.utils.YamlPath
 import dev.protsenko.securityLinter.utils.image.ImageAnalyzer
 import dev.protsenko.securityLinter.utils.image.ImageDefinitionCreator
-import org.jetbrains.yaml.navigation.YAMLQualifiedNameProvider
 import org.jetbrains.yaml.psi.YAMLFile
 import org.jetbrains.yaml.psi.YAMLKeyValue
+import org.jetbrains.yaml.psi.YAMLMapping
 import org.jetbrains.yaml.psi.YAMLSequenceItem
 
 class DockerComposeInspection : LocalInspectionTool() {
-    val provider = YAMLQualifiedNameProvider()
-
     override fun buildVisitor(
         holder: ProblemsHolder,
         isOnTheFly: Boolean,
@@ -34,81 +32,88 @@ class DockerComposeInspection : LocalInspectionTool() {
             override fun visitFile(file: PsiFile) {
                 if (file !is YAMLFile) return
                 if (!file.name.startsWith("docker", ignoreCase = true)) return
-                super.visitFile(file)
-            }
 
-            /**
-             * For more information about service attributes: https://docs.docker.com/reference/compose-file/services
-             */
-            override fun visitElement(element: PsiElement) {
-                if (element is YAMLKeyValue) {
-                    val fqn = provider.getQualifiedName(element) ?: return
-                    if (!fqn.startsWith("services")) return
+                val documents = file.documents
 
-                    val attributeName = element.key?.text ?: return
-                    if (attributeName !in supportedAttributes) return
-                    val attributeValue = element.value?.text?.trim() ?: return
+                for (document in documents) {
+                    val serviceMapping = YamlPath.findByYamlPath("services", document) as? YAMLMapping ?: return
+                    val serviceDefinitions =
+                        serviceMapping
+                            .children
+                            .filterIsInstance<YAMLKeyValue>()
+                            .map { it.value }
+                            .filterIsInstance<YAMLMapping>()
 
-                    when (attributeName) {
-                        // Analyzing image definition
-                        IMAGE_KEY_LITERAL -> {
-                            val imageDefinition = ImageDefinitionCreator.fromString(attributeValue, emptyMap())
-                            ImageAnalyzer.analyzeAndHighlight(imageDefinition, holder, element, emptyMap())
-                        }
+                    for (serviceDefinition in serviceDefinitions) {
+                        val serviceAttributes = serviceDefinition.children.filterIsInstance<YAMLKeyValue>()
+                        for (serviceAttribute in serviceAttributes) {
+                            val attributeName = serviceAttribute.key?.text ?: continue
+                            if (attributeName !in supportedAttributes) continue
+                            val attributeValue = serviceAttribute.value?.text ?: continue
 
-                        USER_KEY_LITERAL -> {
-                            if (PROHIBITED_USERS.contains(attributeValue.trim())) {
-                                val descriptor =
-                                    HtmlProblemDescriptor(
-                                        element,
-                                        SecurityPluginBundle.message("dfs002.documentation"),
-                                        SecurityPluginBundle.message("dfs002.root-user-is-used"),
-                                        ProblemHighlightType.ERROR,
-                                    )
+                            when (attributeName) {
+                                // Analyzing image definition
+                                IMAGE_KEY_LITERAL -> {
+                                    val imageDefinition = ImageDefinitionCreator.fromString(attributeValue, emptyMap())
+                                    ImageAnalyzer.analyzeAndHighlight(imageDefinition, holder, serviceAttribute, emptyMap())
+                                }
 
-                                holder.registerProblem(descriptor)
-                            }
-                        }
+                                USER_KEY_LITERAL -> {
+                                    if (PROHIBITED_USERS.contains(attributeValue.trim())) {
+                                        val descriptor =
+                                            HtmlProblemDescriptor(
+                                                serviceAttribute,
+                                                SecurityPluginBundle.message("dfs002.documentation"),
+                                                SecurityPluginBundle.message("dfs002.root-user-is-used"),
+                                                ProblemHighlightType.ERROR,
+                                            )
 
-                        PRIVILEGED_LITERAL -> {
-                            if (attributeValue == "true") {
-                                holder.registerProblem(
-                                    element,
-                                    SecurityPluginBundle.message("ds033.using-privileged"),
-                                    ProblemHighlightType.ERROR,
-                                )
-                            }
-                        }
-
-                        PORTS_LITERAL -> {
-                            element.value?.children?.forEach {
-                                if (it is YAMLSequenceItem) {
-                                    var portsDefinitions = it.value?.text ?: return@forEach
-                                    // quotes at start and end should be trimmed
-                                    if (portsDefinitions.length > 2) {
-                                        portsDefinitions = portsDefinitions.substring(1, portsDefinitions.length - 1)
-                                        val containerPorts = PortUtils.parseContainerPorts(portsDefinitions)
-                                        containerPorts.forEach { containerPort ->
-                                            if (PROHIBITED_PORTS.contains(containerPort)) {
-                                                val descriptor =
-                                                    HtmlProblemDescriptor(
-                                                        it,
-                                                        SecurityPluginBundle.message("dfs011.documentation"),
-                                                        SecurityPluginBundle.message("dfs011.ssh-port-exposed"),
-                                                        ProblemHighlightType.ERROR,
-                                                        emptyArray(),
-                                                    )
-
-                                                holder.registerProblem(descriptor)
-                                            }
-                                        }
+                                        holder.registerProblem(descriptor)
                                     }
                                 }
-                                return@forEach
-                            } ?: return
-                        }
 
-                        else -> return
+                                PRIVILEGED_LITERAL -> {
+                                    if (attributeValue == "true") {
+                                        holder.registerProblem(
+                                            serviceAttribute,
+                                            SecurityPluginBundle.message("ds033.using-privileged"),
+                                            ProblemHighlightType.ERROR,
+                                        )
+                                    }
+                                }
+
+                                PORTS_LITERAL -> {
+                                    serviceAttribute.value?.children?.forEach {
+                                        if (it is YAMLSequenceItem) {
+                                            var portsDefinitions = it.value?.text ?: return@forEach
+                                            // quotes at start and end should be trimmed
+                                            if (portsDefinitions.length > 2) {
+                                                portsDefinitions =
+                                                    portsDefinitions.substring(1, portsDefinitions.length - 1)
+                                                val containerPorts = PortUtils.parseContainerPorts(portsDefinitions)
+                                                containerPorts.forEach { containerPort ->
+                                                    if (PROHIBITED_PORTS.contains(containerPort)) {
+                                                        val descriptor =
+                                                            HtmlProblemDescriptor(
+                                                                it,
+                                                                SecurityPluginBundle.message("dfs011.documentation"),
+                                                                SecurityPluginBundle.message("dfs011.ssh-port-exposed"),
+                                                                ProblemHighlightType.ERROR,
+                                                                emptyArray(),
+                                                            )
+
+                                                        holder.registerProblem(descriptor)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        return@forEach
+                                    } ?: return
+                                }
+
+                                else -> return
+                            }
+                        }
                     }
                 }
             }
