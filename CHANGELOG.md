@@ -2,6 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.15] 16-12-2025
+
+### Fixed
+- Fixed issues for CLI mode through Qodana
+
 ## [2.0.14] 13-10-2025
 
 ### Changed
