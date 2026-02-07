@@ -2,6 +2,13 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.16] 07-02-2026
+
+### Fixed
+- Fixed an [issue](https://github.com/NordCoderd/cloud-security-plugin/issues/4) with false positive during curl to bash analysis.
+
+Thanks to [@avbasov](https://github.com/avbasov) for reporting it.
+
 ## [2.0.15] 16-12-2025
 
 ### Fixed
