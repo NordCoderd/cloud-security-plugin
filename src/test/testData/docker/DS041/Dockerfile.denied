@@ -1,0 +1,4 @@
+FROM alpine
+<warning descr="Legacy ENV/ARG key value format used
+Space-separated key and value is deprecated and may be ambiguous.
+Use ENV key=value or ARG key=value.">ENV foo bar</warning>

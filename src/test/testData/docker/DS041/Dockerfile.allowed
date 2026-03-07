@@ -1,0 +1,5 @@
+FROM alpine
+ARG foo=bar
+ARG build_number
+ENV DEPS="curl git make"
+ENV FOO=bar BAZ=qux

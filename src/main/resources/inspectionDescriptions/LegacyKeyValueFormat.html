@@ -1,0 +1,10 @@
+<html>
+<body>
+<p>Detects deprecated key-value declarations in Dockerfile <code>ENV</code> and <code>ARG</code> commands.</p>
+<ul>
+    <li>Avoid legacy space-separated format like <code>ENV key value</code> and <code>ARG key value</code>.</li>
+    <li>Use <code>ENV key=value</code> and <code>ARG key=value</code> for explicit parsing.</li>
+    <li>For multiline values, keep the value in quotes after <code>=</code>.</li>
+</ul>
+</body>
+</html>

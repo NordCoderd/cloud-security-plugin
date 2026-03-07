@@ -1,0 +1,5 @@
+FROM alpine
+ENV DEPS="\
+    curl \
+    git \
+    make"

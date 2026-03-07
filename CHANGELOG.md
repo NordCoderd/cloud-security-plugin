@@ -11,6 +11,7 @@
 - Inspection: COPY to a relative destination without WORKDIR set
 - Inspection: instruction keywords should use consistent casing
 - Inspection: ARG in FROM should resolve to a valid image without build args
+- Inspection: use `ARG key=value` and `ENV key=value` instead of legacy key value format
 
 ## [2.0.16] 07-02-2026
 
