@@ -1,0 +1,3 @@
+FROM alpine
+RUN echo hello > /greeting.txt
+<warning descr="Command 'EntryPoint' should be consistently cased.">EntryPoint</warning> ["cat", "/greeting.txt"]

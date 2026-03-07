@@ -50,6 +50,12 @@
                 enabledByDefault="true"/>
 
         <localInspection
+                implementationClass="dev.protsenko.securityLinter.docker.inspection.instruction.DockerfileInstructionCasingInspection"
+                displayName="Instruction casing consistency"
+                groupPathKey="common.group-key" groupKey="common.docker-group-key" language="Dockerfile"
+                enabledByDefault="true"/>
+
+        <localInspection
                 implementationClass="dev.protsenko.securityLinter.docker.inspection.healthcheck.DockerfileHealthCheckInspection"
                 displayName="HEALTHCHECK best practices"
                 groupPathKey="common.group-key" groupKey="common.docker-group-key" language="Dockerfile"

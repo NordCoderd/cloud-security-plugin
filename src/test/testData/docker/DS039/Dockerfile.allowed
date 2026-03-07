@@ -1,0 +1,3 @@
+FROM alpine
+RUN echo hello > /greeting.txt
+ENTRYPOINT ["cat", "/greeting.txt"]

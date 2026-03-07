@@ -5,7 +5,7 @@
 
 1. Implement everything in pure Kotlin, making full use of IDE-assisted language features and inspections.
 2. Don't touch files with existing inspection implementations or its texts.
-3. Add inspection messages and tooltips to [SecurityPluginBundle.properties](src/main/resources/messages/SecurityPluginBundle.properties).
+3. Add inspection messages and tooltips to [SecurityPluginBundle.properties](src/main/resources/messages/SecurityPluginBundle.properties). Make sure it included: a problem, why it's a problem, solution. Very brief.
 4. Create the inspection draft in the technology-specific folder under [securityLinter](src/main/kotlin/dev/protsenko/securityLinter).
 5. Add tests covering the inspection:
    - Example of a Docker inspection: [DS003SshPortExposed.kt](src/test/kotlin/dev/protsenko/securityLinter/docker/DS003SshPortExposed.kt)
