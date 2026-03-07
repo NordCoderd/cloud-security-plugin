@@ -1,0 +1,6 @@
+FROM ubuntu:24.04
+RUN wget --progress=dot:giga https://example.com/archive.tar.gz && \
+    wget --quiet https://example.com/archive2.tar.gz && \
+    wget --no-verbose https://example.com/archive3.tar.gz && \
+    wget -qO /tmp/archive4.tar.gz https://example.com/archive4.tar.gz && \
+    wget -nv https://example.com/archive5.tar.gz
