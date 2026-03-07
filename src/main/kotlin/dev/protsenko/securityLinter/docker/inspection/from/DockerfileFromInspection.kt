@@ -31,6 +31,17 @@ class DockerfileFromInspection : LocalInspectionTool() {
                 val aliasToImageDefinition = mutableMapOf<String, ImageDefinition>()
 
                 fromCommands.forEach { fromCommand ->
+                    if (FROM_PLATFORM_FLAG_REGEX.containsMatchIn(fromCommand.text)) {
+                        val descriptor =
+                            HtmlProblemDescriptor(
+                                fromCommand,
+                                SecurityPluginBundle.message("dfs033.documentation"),
+                                SecurityPluginBundle.message("dfs033.problem-text"),
+                                ProblemHighlightType.WARNING,
+                            )
+                        holder.registerProblem(descriptor)
+                    }
+
                     val imageDefinition = ImageDefinitionCreator.fromDockerFileFromCommand(fromCommand) ?: return
                     ImageAnalyzer.analyzeAndHighlight(imageDefinition, holder, fromCommand, aliasToImageDefinition)
 
@@ -55,5 +66,9 @@ class DockerfileFromInspection : LocalInspectionTool() {
                 }
             }
         }
+    }
+
+    companion object {
+        private val FROM_PLATFORM_FLAG_REGEX = Regex("""(?i)\bfrom\s+--platform(?:\s*=|\s+)""")
     }
 }

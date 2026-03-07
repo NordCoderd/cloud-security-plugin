@@ -1,0 +1,2 @@
+<warning descr="Do not use --platform flag with FROM instruction.">FROM --platform=linux/amd64 alpine:3.20</warning>
+RUN echo "not ok"

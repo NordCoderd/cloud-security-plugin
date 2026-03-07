@@ -1,0 +1,3 @@
+ARG TARGETPLATFORM=linux/amd64
+<warning descr="Do not use --platform flag with FROM instruction.">FROM --platform=$TARGETPLATFORM alpine:3.20</warning>
+RUN echo "variable"

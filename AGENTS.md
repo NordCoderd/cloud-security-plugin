@@ -18,9 +18,10 @@
    - Register the required extension points in [plugin.xml](src/main/resources/META-INF/plugin.xml).
 8. If the inspection is YAML-based, use the bundled helper classes such as [YamlPath.kt](src/main/kotlin/dev/protsenko/securityLinter/utils/YamlPath.kt).
 9. Ensure that all tests pass.
-10. If the plugin version has not been updated in [gradle.properties](gradle.properties), update it.
-11. Update the changelog in [CHANGELOG.md](CHANGELOG.md).
+10. Update the changelog in [CHANGELOG.md](CHANGELOG.md) for WIP version.
+11. If the plugin version has not been updated in [gradle.properties](gradle.properties), update it, and mark in changelog as WIP.
 12. Perform a full build and run the complete test suite for the plugin.
+13. Add new files to git.
 
 ## Summary for verification development
 

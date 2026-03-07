@@ -1,0 +1,2 @@
+<warning descr="Do not use --platform flag with FROM instruction.">FROM --PLATFORM=linux/amd64 alpine:3.20</warning>
+RUN echo "uppercase"
