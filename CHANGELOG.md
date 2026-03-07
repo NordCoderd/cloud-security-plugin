@@ -2,10 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
-## [2.0.17] 07-03-2026 [WIP]
+## [2.0.18] 07-03-2026 [WIP]
 
 ### Added
 
+- Inspection: do not use --platform flag with FROM
 - Inspection: wget without recommended flags
 
 ## [2.0.16] 07-02-2026
