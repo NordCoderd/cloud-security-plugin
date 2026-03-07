@@ -1,4 +1,5 @@
 FROM debian:9
 USER nobody
+WORKDIR /app
 COPY test.zip test.zip
 ADD

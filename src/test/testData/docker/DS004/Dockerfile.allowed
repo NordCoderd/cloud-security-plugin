@@ -1,5 +1,6 @@
 FROM debian:9
 USER nobody
+WORKDIR /app
 COPY test.zip test.zip
 ADD test.gz test.jar
 ADD "test-1.gz" test-1.txt

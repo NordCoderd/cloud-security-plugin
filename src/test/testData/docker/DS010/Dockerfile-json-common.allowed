@@ -1,3 +1,4 @@
 FROM alpine:3.13
 USER mike
+WORKDIR /app
 COPY ["package.json", "myapp/"]

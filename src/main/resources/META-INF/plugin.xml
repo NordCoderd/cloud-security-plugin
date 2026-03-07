@@ -106,6 +106,7 @@
         <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.impl.CopyReferringToCurrentImageAnalyzer"/>
         <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.impl.UseSlashForCopyArgsAnalyzer"/>
         <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.impl.DockerfileAddInspection"/>
+        <dockerFileCopyOrAddAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.copyAndAdd.impl.CopyRelativeDestinationWithoutWorkdirAnalyzer"/>
     </extensions>
 
     <extensionPoints>

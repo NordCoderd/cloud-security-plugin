@@ -8,6 +8,7 @@
 
 - Inspection: do not use --platform flag with FROM
 - Inspection: wget without recommended flags
+- Inspection: COPY to a relative destination without WORKDIR set
 
 ## [2.0.16] 07-02-2026
 

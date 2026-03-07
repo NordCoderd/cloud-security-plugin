@@ -1,0 +1,3 @@
+FROM alpine:3.20
+<warning descr="COPY uses a relative destination without WORKDIR
+Set WORKDIR before using relative COPY destinations to avoid ambiguous target paths.">COPY ["package.json", "app/"]</warning>

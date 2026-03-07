@@ -1,5 +1,6 @@
 FROM alpine:3.13
 USER mike
+WORKDIR /app
 ADD "/target/resources.tar.gz" "resources.jar"
 <error descr="ADD instead of COPY
 You should use COPY instead of ADD unless you want to extract a tar file.">ADD "/target/app.jar" "app.jar"</error>
