@@ -1,0 +1,2 @@
+ARG TAG
+FROM alpine:${TAG:-3.14}

@@ -1,0 +1,4 @@
+ARG REGISTRY
+<warning descr="ARG in FROM must resolve to a valid image without --build-arg
+Build should work with default ARG values only.
+Set a default ARG value or use fallback expansion.">FROM ${REGISTRY}/busybox:1.36</warning>

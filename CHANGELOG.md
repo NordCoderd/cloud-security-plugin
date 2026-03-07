@@ -10,6 +10,7 @@
 - Inspection: wget without recommended flags
 - Inspection: COPY to a relative destination without WORKDIR set
 - Inspection: instruction keywords should use consistent casing
+- Inspection: ARG in FROM should resolve to a valid image without build args
 
 ## [2.0.16] 07-02-2026
 

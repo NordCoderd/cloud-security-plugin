@@ -1,0 +1,10 @@
+<html>
+<body>
+<p>Detects FROM image references that become invalid when build arguments are not provided.</p>
+<ul>
+    <li>If an ARG is used in <code>FROM</code>, the default resolution must still form a valid image reference.</li>
+    <li>Do not rely on <code>--build-arg</code> to make the image name or tag syntactically valid.</li>
+    <li>Use ARG defaults or fallback expansion such as <code>${TAG:-3.14}</code>.</li>
+</ul>
+</body>
+</html>
