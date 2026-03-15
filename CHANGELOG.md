@@ -2,11 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
-## [2.0.17] 07-03-2026 [WIP]
+## [2.0.17] 15-03-2026
 
 ### Added
 
-- Inspection: wget without recommended flags
+- Inspection: [wget without recommended flags](https://protsenko.dev/infrastructure-security/avoid-wget-without-progress-or-quiet/)
 
 ## [2.0.16] 07-02-2026
 
