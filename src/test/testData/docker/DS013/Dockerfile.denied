@@ -1,6 +1,6 @@
 FROM debian:stable-20210621
 <warning descr="RUN using 'wget' and 'curl'
-Avoid using both 'wget' and 'curl' since these tools have the same effect.">RUN wget http://bing.com</warning>
+Avoid using both 'wget' and 'curl' since these tools have the same effect.">RUN wget -q http://bing.com</warning>
 
 FROM baseimage:1.0
 USER mike

@@ -1,0 +1,2 @@
+FROM ubuntu:24.04
+<warning descr="Avoid using wget without a progress/quiet option. Use --progress=dot:giga or consider -q/-nv (--quiet/--no-verbose).">RUN wget https://example.com/archive.tar.gz</warning>

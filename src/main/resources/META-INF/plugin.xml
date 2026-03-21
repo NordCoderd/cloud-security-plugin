@@ -98,6 +98,7 @@
         <dockerFileRunAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.run.impl.UserAddAnalyzer"/>
         <dockerFileRunAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.run.impl.ApkNoCacheValidatorAnalyzer"/>
         <dockerFileRunAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.run.impl.PipNoCacheDirAnalyzer"/>
+        <dockerFileRunAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.run.impl.WgetWithoutRecommendedFlagsAnalyzer"/>
 
         <dockerFileExposeAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.expose.impl.SshPortExposedAnalyzer"/>
         <dockerFileExposeAnalyzer implementation="dev.protsenko.securityLinter.docker.inspection.expose.impl.ExposedPortOutOfRangeAnalyzer"/>
