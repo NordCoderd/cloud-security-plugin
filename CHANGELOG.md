@@ -2,6 +2,11 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.18] 10-05-2026
+
+### Changed
+- Updated plugin to support new version of the IntelliJ Platform, thanks to [kylichist](https://github.com/kylichist)
+
 ## [2.0.17] 15-03-2026
 
 ### Added
