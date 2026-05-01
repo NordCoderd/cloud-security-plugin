@@ -2,7 +2,13 @@
 
 # Cloud (IaC) Security Changelog
 
-## [2.0.18] 10-05-2026
+## [2.0.19] 01-05-2026
+
+### Fixed
+
+- Fixed false positive for apk no cache arg detection, thanks to [m0nclous](https://github.com/m0nclous)
+
+## [2.0.18] 10-04-2026 
 
 ### Changed
 - Updated plugin to support new version of the IntelliJ Platform, thanks to [kylichist](https://github.com/kylichist)

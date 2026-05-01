@@ -1,2 +1,6 @@
 FROM alpine:3.13
-RUN apk add --no-cache git
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN apk add --no-cache git</warning>
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN --mount=type=cache,target=/var/cache/apk apk add curl git</warning>
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN --mount=type=cache,target=/var/cache/apk,sharing=locked apk add curl</warning>
+<warning descr="Multiple consecutive 'RUN' instructions. Consider consolidation.">RUN --mount=type=secret,id=s --mount=type=cache,target=/var/cache/apk \
+    apk add curl</warning>
