@@ -16,7 +16,12 @@ class ZypperCleanCheckerTest : TestCase() {
             "RUN echo 'No zypper commands here'",
             "RUN zypper install package && other_command && zypper clean",
             "RUN zypper install package; zypper clean",
-            "RUN zypper install package && zypper cc && echo 'Done'"
+            "RUN zypper install package && zypper cc && echo 'Done'",
+            "RUN --mount=type=cache,target=/var/cache/zypp zypper install curl",
+            "RUN --mount=type=cache,target=/var/cache/zypp/ zypper install curl",
+            "RUN --mount=type=cache,target=\"/var/cache/zypp\" zypper install curl",
+            "RUN --mount=type=cache,id=zypp,target=/var/cache/zypp zypper install curl",
+            "RUN --mount=type=secret,id=x --mount=type=cache,target=/var/cache/zypp zypper install curl",
         )
         for (command in commands) {
             assertTrue(
@@ -37,7 +42,11 @@ class ZypperCleanCheckerTest : TestCase() {
             // "RUN zypper install package && zypper clean; zypper install another_package",
             "RUN zypper clean && zypper install package",
             "RUN zypper install package && other_command",
-            "RUN zypper in package && zypper refresh"
+            "RUN zypper in package && zypper refresh",
+            "RUN --mount=type=cache,target=/root/.cache zypper install curl",
+            "RUN --mount=type=bind,target=/var/cache/zypp zypper install curl",
+            "RUN --mount=type=tmpfs,target=/var/cache/zypp zypper install curl",
+            "RUN --mount=type=cache,target=/var/cache/zypp zypper install curl && rm -rf /var/cache/zypp/*",
         )
         for (command in commands) {
             assertFalse(

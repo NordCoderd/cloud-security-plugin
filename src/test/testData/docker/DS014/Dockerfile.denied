@@ -2,3 +2,5 @@ FROM alpine:3.5
 <warning descr="'yum clean all' missing
 You should use 'yum clean all' after using a 'yum install' command to clean package cached data and reduce image size.">RUN yum install -y vim</warning>
 USER mike
+<warning descr="'yum clean all' missing
+You should use 'yum clean all' after using a 'yum install' command to clean package cached data and reduce image size.">RUN --mount=type=cache,target=/root/.cache yum install -y curl</warning>

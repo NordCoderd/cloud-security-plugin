@@ -17,7 +17,11 @@ class YumInstallCheckerTest : TestCase() {
             "RUN yum install package || echo 'Failed to install'",
             "RUN yum install package | bash",
             "RUN yum update && yum install package",
-            "RUN yum clean all && yum install package"
+            "RUN yum clean all && yum install package",
+            "RUN --mount=type=cache,target=/root/.cache yum install -y curl",
+            "RUN --mount=type=bind,target=/var/cache/yum yum install -y curl",
+            "RUN --mount=type=tmpfs,target=/var/cache/yum yum install -y curl",
+            "RUN --mount=type=cache,target=/var/cache/yum yum install -y curl && rm -rf /var/cache/yum/*",
         )
         for (command in commands) {
             assertFalse(
@@ -35,7 +39,12 @@ class YumInstallCheckerTest : TestCase() {
             "RUN yum INSTALL package && YUM CLEAN ALL",
             "RUN yum install package && some_command && yum clean all",
             "RUN yum install package; yum clean all",
-            "RUN yum clean all"
+            "RUN yum clean all",
+            "RUN --mount=type=cache,target=/var/cache/yum yum install -y curl",
+            "RUN --mount=type=cache,target=/var/cache/yum/ yum install -y curl",
+            "RUN --mount=type=cache,target=\"/var/cache/yum\" yum install -y curl",
+            "RUN --mount=type=cache,id=yum,target=/var/cache/yum yum install -y curl",
+            "RUN --mount=type=secret,id=x --mount=type=cache,target=/var/cache/yum yum install -y curl",
         )
         for (command in commands) {
             assertTrue(
@@ -45,4 +54,3 @@ class YumInstallCheckerTest : TestCase() {
         }
     }
 }
-

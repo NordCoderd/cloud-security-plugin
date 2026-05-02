@@ -2,6 +2,12 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.20] 02-05-2026
+
+### Fixed
+
+- Fixed false positives for dnf, yum, zypper, pip, and apk cache-cleanup inspections when the same Docker `RUN` command uses a measured BuildKit cache mount target.
+
 ## [2.0.19] 01-05-2026
 
 ### Fixed

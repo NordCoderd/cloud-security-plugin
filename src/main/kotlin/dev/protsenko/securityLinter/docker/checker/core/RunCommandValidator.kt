@@ -8,7 +8,8 @@ interface RunCommandValidator {
      * - The validator is singleton and should use Kotlin object (not class).
      * - Your validator logic should not create additional objects (e.g., lists).
      * - Your validator must handle new lines and special symbols (e.g., &&).
-     * - Use only one regular expression to check the command.
+     * - Prefer one regular expression for simple validators.
+     * - Shared validator interfaces may use focused parsing when it prevents duplicated complex regular expressions.
      * - Write tests using JUnit 3, covering both valid and invalid cases.
      * - Include test cases that adhere to these rules.
      * - Provide Javadoc comments for your regular expressions and for this method.

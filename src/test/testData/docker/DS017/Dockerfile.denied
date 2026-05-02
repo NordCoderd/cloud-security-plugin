@@ -3,3 +3,5 @@ USER mike
 <warning descr="'dnf clean all' missing
 Cached package data should be cleaned after installation to reduce image size.">RUN set -uex &&     dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo &&     sed -i 's/\\releasever/26/g' /etc/yum.repos.d/docker-ce.repo &&     dnf install -vy docker-ce</warning>
 HEALTHCHECK CMD curl --fail http://localhost:3000 || exit 1
+<warning descr="'dnf clean all' missing
+Cached package data should be cleaned after installation to reduce image size.">RUN --mount=type=cache,target=/root/.cache dnf install -y curl</warning>

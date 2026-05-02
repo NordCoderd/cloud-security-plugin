@@ -16,6 +16,11 @@ class PipNoCacheDirValidatorTest : TestCase() {
         assertTrue(PipNoCacheDirValidator.isValid("RUN apt-get update"))
         assertTrue(PipNoCacheDirValidator.isValid("RUN echo 'hello world'"))
         assertTrue(PipNoCacheDirValidator.isValid("RUN npm install package"))
+        assertTrue(PipNoCacheDirValidator.isValid("RUN --mount=type=cache,target=/root/.cache/pip pip install requests"))
+        assertTrue(PipNoCacheDirValidator.isValid("RUN --mount=type=cache,target=/root/.cache/pip/ pip install requests"))
+        assertTrue(PipNoCacheDirValidator.isValid("RUN --mount=type=cache,target=\"/root/.cache/pip\" pip install requests"))
+        assertTrue(PipNoCacheDirValidator.isValid("RUN --mount=type=cache,id=pip,target=/root/.cache/pip pip install requests"))
+        assertTrue(PipNoCacheDirValidator.isValid("RUN --mount=type=secret,id=x --mount=type=cache,target=/root/.cache/pip pip install requests"))
     }
 
     fun testInvalidCommands() {
@@ -28,6 +33,10 @@ class PipNoCacheDirValidatorTest : TestCase() {
 
         // Multi-line commands
         assertFalse(PipNoCacheDirValidator.isValid("RUN pip install \\\n    package \\\n    another-package"))
+        assertFalse(PipNoCacheDirValidator.isValid("RUN --mount=type=cache,target=/root/.cache pip install requests"))
+        assertFalse(PipNoCacheDirValidator.isValid("RUN --mount=type=bind,target=/root/.cache/pip pip install requests"))
+        assertFalse(PipNoCacheDirValidator.isValid("RUN --mount=type=tmpfs,target=/root/.cache/pip pip install requests"))
+        assertFalse(PipNoCacheDirValidator.isValid("RUN --mount=type=cache,target=/root/.cache/pip pip install requests && rm -rf /root/.cache/pip/*"))
     }
 
     fun testEdgeCases() {

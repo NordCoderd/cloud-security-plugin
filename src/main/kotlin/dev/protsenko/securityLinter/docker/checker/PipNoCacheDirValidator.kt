@@ -1,16 +1,13 @@
 package dev.protsenko.securityLinter.docker.checker
 
-import dev.protsenko.securityLinter.docker.checker.core.RunCommandValidator
+import dev.protsenko.securityLinter.docker.checker.core.CacheMountAwareRunCommandValidator
 
-object PipNoCacheDirValidator : RunCommandValidator {
+object PipNoCacheDirValidator : CacheMountAwareRunCommandValidator {
+    override val cacheMountTargets = setOf("/root/.cache/pip")
+
     /**
      * Regular expression to detect pip install commands that lack the --no-cache-dir option.
-     * Pattern explanation:
-     * - ^RUN\s+ : Command must start with 'RUN' followed by one or more whitespace characters
-     * - (?=.*pip\s+install) : Positive lookahead to ensure 'pip install' is present somewhere
-     * - (?!.*--no-cache-dir) : Negative lookahead to ensure '--no-cache-dir' is NOT present anywhere
-     * - .* : Match any remaining characters including newlines and special symbols
-     * - $ : End of string anchor
+     * BuildKit cache-mount exemption is handled by CacheMountAwareRunCommandValidator.
      */
     private val regex =
         Regex(
@@ -19,10 +16,11 @@ object PipNoCacheDirValidator : RunCommandValidator {
         )
 
     /**
-     * Validates if a Docker RUN command follows security best practices for pip install.
+     * Validates if a Docker RUN command follows security best practices for pip install
+     * when no supported BuildKit cache mount is present.
      *
      * @param command The Docker command string to validate
-     * @return false if pip install is used without --no-cache-dir (security violation), true otherwise
+     * @return false if pip install is used without --no-cache-dir, true otherwise
      */
-    override fun isValid(command: String): Boolean = !regex.matches(command)
+    override fun isValidWithoutCacheMount(command: String): Boolean = !regex.matches(command)
 }

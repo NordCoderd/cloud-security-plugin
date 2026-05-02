@@ -1,8 +1,9 @@
 package dev.protsenko.securityLinter.docker.checker
 
-import dev.protsenko.securityLinter.docker.checker.core.RunCommandValidator
+import dev.protsenko.securityLinter.docker.checker.core.CacheMountAwareRunCommandValidator
 
-object ZypperInstallWithoutCleanValidator : RunCommandValidator {
+object ZypperInstallWithoutCleanValidator : CacheMountAwareRunCommandValidator {
+    override val cacheMountTargets = setOf("/var/cache/zypp")
     private val installCommands =
         listOf(
             "install",
@@ -22,5 +23,5 @@ object ZypperInstallWithoutCleanValidator : RunCommandValidator {
             options = setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL),
         )
 
-    override fun isValid(command: String) = !pattern.matches(command)
+    override fun isValidWithoutCacheMount(command: String) = !pattern.matches(command)
 }

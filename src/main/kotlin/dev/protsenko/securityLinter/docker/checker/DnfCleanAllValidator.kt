@@ -1,8 +1,9 @@
 package dev.protsenko.securityLinter.docker.checker
 
-import dev.protsenko.securityLinter.docker.checker.core.RunCommandValidator
+import dev.protsenko.securityLinter.docker.checker.core.CacheMountAwareRunCommandValidator
 
-object DnfCleanAllValidator : RunCommandValidator {
+object DnfCleanAllValidator : CacheMountAwareRunCommandValidator {
+    override val cacheMountTargets = setOf("/var/cache/dnf")
     private val installCommands =
         listOf(
             "install",
@@ -23,7 +24,7 @@ object DnfCleanAllValidator : RunCommandValidator {
             options = setOf(RegexOption.IGNORE_CASE),
         )
 
-    override fun isValid(command: String): Boolean {
+    override fun isValidWithoutCacheMount(command: String): Boolean {
         if (dnfInstallPattern.containsMatchIn(command)) {
             if (dnfInstallWithoutCleanPattern.containsMatchIn(command)) {
                 return false

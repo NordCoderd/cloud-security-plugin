@@ -1,2 +1,4 @@
 FROM alpine:3.13
 RUN pip install --no-cache-dir package
+WORKDIR /tmp
+RUN --mount=type=cache,target=/root/.cache/pip pip install requests

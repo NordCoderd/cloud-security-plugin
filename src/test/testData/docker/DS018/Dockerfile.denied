@@ -2,3 +2,5 @@ FROM alpine:3.5
 <warning descr="'zypper clean' missing
 The layer and image size should be reduced by deleting unneeded caches after running zypper.">RUN zypper install -y bash</warning>
 USER mike
+<warning descr="'zypper clean' missing
+The layer and image size should be reduced by deleting unneeded caches after running zypper.">RUN --mount=type=cache,target=/root/.cache zypper install curl</warning>
