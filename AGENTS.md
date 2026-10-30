@@ -1,5 +1,26 @@
+## Project overview
+
+IntelliJ Platform plugin "Cloud (IaC) Security": security inspections for Dockerfile, Docker Compose, Kubernetes and other YAML-based IaC files. Pure Kotlin, built with Gradle (Kotlin DSL).
+
+- Inspections: [securityLinter](src/main/kotlin/dev/protsenko/securityLinter), one folder per technology (`docker`, `dockerCompose`, `kubernetes`, `core`, `utils`).
+- Resources: [messages](src/main/resources/messages), [inspectionDescriptions](src/main/resources/inspectionDescriptions), [META-INF](src/main/resources/META-INF).
+- Tests and test data: [src/test/kotlin](src/test/kotlin), [src/test/testData](src/test/testData).
+
+## Commands
+
+- Run all tests: `./gradlew test`
+- Full build: `./gradlew build`
+- Prefer the narrowest check while iterating (single test class, e.g. `./gradlew test --tests "*DS003*"`); run the full suite before finishing.
+
 ## General rules
 1. Add only new files to git. Do not modify the existing staging unless explicitly required.
+2. Do not commit or push unless explicitly asked.
+3. Before adding code, look at a sibling inspection in the same technology folder and copy its structure, naming and comment density.
+4. Reuse existing helpers (`RunCommandValidator`, `YamlPath`, shared checkers) before writing new ones.
+5. Keep changes scoped to the task. No drive-by refactors, no unrelated formatting changes.
+6. Never edit generated or local-only paths: `build/`, `.intellijPlatform/`, `.gradle/`.
+7. Never hardcode user-facing strings in Kotlin; use `SecurityPluginBundle.properties`.
+8. Report test and build results faithfully. If a step was skipped or failed, say so.
 
 ## Verification development stages
 

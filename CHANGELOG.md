@@ -2,6 +2,12 @@
 
 # Cloud (IaC) Security Changelog
 
+## [2.0.21] 02-05-2026
+
+### Updated
+
+- Updated description because the plugin icon is stretched to whole page.
+
 ## [2.0.20] 02-05-2026
 
 ### Fixed
